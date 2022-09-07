@@ -39,12 +39,6 @@ type CryptFileFunction = (
   body: Params
 ) => Buffer;
 
-type CryptDataFunction = (
-  date: Buffer,
-  decrypt: boolean,
-  body: Params
-) => Buffer;
-
 // File encryption using parameters and salt
 const cryptFileWithSalt: CryptFileFunction = (
   file,
@@ -66,26 +60,6 @@ const cryptFileWithSalt: CryptFileFunction = (
   }
 };
 
-// File encryption using parameters and salt
-const cryptDataWithSalt: CryptDataFunction = (
-  data,
-  decrypt = false,
-  {
-    algo = "aes-256-ctr",
-    key = crypto.randomBytes(16).toString("hex"),
-    salt = crypto.randomBytes(8).toString("hex"),
-  }
-): Buffer => {
-  if (!decrypt) {
-    const cipher = crypto.createCipheriv(algo, key, salt);
-    const crypted = Buffer.concat([cipher.update(data), cipher.final()]);
-    return crypted;
-  } else {
-    const cipher = crypto.createDecipheriv(algo, key, salt);
-    const decrypted = Buffer.concat([cipher.update(data), cipher.final()]);
-    return decrypted;
-  }
-};
 
 // Checks if the file exists
 const checkFile = (files: fileUpload.FileArray | undefined): boolean => {
@@ -121,4 +95,4 @@ const setupHeaders = (res: Response, file?: UploadedFile | undefined) => {
     }
 }
 
-export { cryptFileWithSalt, cryptDataWithSalt, checkFile, checkParams, setupHeaders };
+export { cryptFileWithSalt, checkFile, checkParams, setupHeaders };
