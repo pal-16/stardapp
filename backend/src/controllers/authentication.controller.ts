@@ -3,7 +3,6 @@ import axios, { ResponseType } from 'axios';
 import FormData from 'form-data';
 import express from 'express';
 import { UploadedFile } from 'express-fileupload';
-import * as fs from 'fs';
 
 import Controller from '../interfaces/controller.interface';
 
@@ -13,7 +12,6 @@ import {
   checkParams,
   setupHeaders,
   cryptFileWithSalt,
-  cryptDataWithSalt
 } from "../utils";
 
 class AuthenticationController implements Controller {
@@ -86,12 +84,6 @@ class AuthenticationController implements Controller {
     response.status(200).json({ success: true, message: 'User logged out successfully' })
 }
 
-  private getRestrictedItem = async (
-    _: express.Request,
-    response: express.Response
-  ) => {
-    response.sendFile('./rick-roll-rick-ashley.gif', { root: __dirname });
-  };
 
   private encryptFile = async (
     req : express.Request,
@@ -171,48 +163,6 @@ class AuthenticationController implements Controller {
       return res.sendStatus(400);
     }
   };
-
-  
-  // private getEncryptedContentFromIpfsAndDecrypt = async (
-  //   req : express.Request,
-  //   res: express.Response
-  // ) => {
-  //   try{
-  //     const { filename } = req.body;
-      
-  //     const resp = await axios({
-  //       method: 'post',
-  //       url: `${this.CHAINSAFE_BUCKET_URL}/download`,
-  //       responseType: 'stream' as ResponseType,
-  //       headers: { 
-  //         'Authorization': `Bearer ${this.CHAINSAFE_KEY_SECRET}`,
-  //         'Content-Type': 'application/json'
-  //       },
-  //       data : JSON.stringify({
-  //         "path": `encrypted_${filename}`
-  //       })
-  //     });
-      
-  //     let formdata = new FormData();
-  //     formdata.append('key', this.ENCRYPTION_KEY);
-  //     formdata.append('salt', this.ENCRYPTION_SALT);
-  //     formdata.append('algo', this.ENCRYPTION_ALGO);
-  //     formdata.append('file', resp.data);
-
-  //     const resp2 = await axios({
-  //       method: 'post',
-  //       url: `${this.SELF_API_URL}/decrypt`,
-  //       responseType: 'stream' as ResponseType,
-  //       headers: { 
-  //         ...formdata.getHeaders()
-  //       },
-  //       data : formdata
-  //     })
-  //     resp2.data.pipe(res)
-  //   } catch (error) {
-  //     return res.sendStatus(400);
-  //   }
-  // };
 }
 
 export default AuthenticationController;
