@@ -16,6 +16,7 @@ const Navbar = (props) => {
     await connectWallet();
     const account = await getAccount();
     setAccount(JSON.stringify(account));
+    setContentUri('');
     const signature = await signPayload();
     const {accessToken, error} = await getAccessToken({signature, ...account});
     if (error) {
