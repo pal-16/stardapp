@@ -13,7 +13,8 @@ class Admin extends Component {
   componentDidMount() {
     if (this.state.init) {
       this.setState({ init: false });
-      prompt('Enter Admin credentials twice', '');
+      prompt('Enter Admin Username', '');
+      prompt('Enter Admin Password', '');
     }
   }
 	
