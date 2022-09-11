@@ -121,6 +121,12 @@ class AuthenticationController implements Controller {
     req : express.Request,
     res: express.Response
   ) => {
+    console.log(req.body);
+    if (!req.files || !checkFile(req.files)) {
+      return res.status(400).end("Please upload correct file");
+    }
+    console.log((req.files.file as UploadedFile).name)
+    res.send()
   };
   
   private downloadFile = async (
