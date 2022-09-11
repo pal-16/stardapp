@@ -83,6 +83,10 @@ The following wallet is also the administrator for [our FA2 smart contract][Demo
 
 To check the unhappy path, you could just use any random wallet to connect to the app.
 
+<ins><b>Interacting on Admin interface</b></ins>
+
+If you want to upload a new content, you can use [the admin interface][Demo App Admin]. You can use any username/password in the browser prompt to remove it and move forward. For testing purpose, it would be a good idea to upload a small file 😅
+
 <ins><b> App testing </b></ins>
 The [poc app][Demo App] runs fine on the following platforms:
 | Browser | Version | Works in incognito mode too? | Comments |
