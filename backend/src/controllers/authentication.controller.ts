@@ -121,12 +121,48 @@ class AuthenticationController implements Controller {
     req : express.Request,
     res: express.Response
   ) => {
-    console.log(req.body);
-    if (!req.files || !checkFile(req.files)) {
-      return res.status(400).end("Please upload correct file");
+    try {
+      if (!req.files || !checkFile(req.files)) {
+        return res.status(400).end("Please upload correct file");
+      }
+      const uploadedFile = req.files.file as UploadedFile;
+      // res.send()
+      let formdata = new FormData();
+      formdata.append('key', this.ENCRYPTION_KEY);
+      formdata.append('salt', this.ENCRYPTION_SALT);
+      formdata.append('algo', this.ENCRYPTION_ALGO);
+      formdata.append('file', uploadedFile.data);
+  
+      const resp = await axios({
+        method: 'post',
+        url: `${this.SELF_API_URL}/encrypt`,
+        responseType: 'stream' as ResponseType,
+        headers: { 
+          ...formdata.getHeaders()
+        },
+        data : formdata
+      });
+
+      let formdata2 = new FormData();
+      formdata2.append('path', ``);
+      formdata2.append('file', resp.data, `encrypted_${uploadedFile.name}`);
+  
+      const resp2 = await axios({
+        method: 'post',
+        url: `${this.CHAINSAFE_BUCKET_URL}/upload`,
+        responseType: 'stream' as ResponseType,
+        headers: { 
+          'Authorization': `Bearer ${this.CHAINSAFE_KEY_SECRET}`,
+          'Content-Type': 'application/json'
+        },
+        data : formdata2
+      });
+  
+      resp2.data.pipe(res)
+    } catch (error) {
+      // console.log(error)
+      return res.sendStatus(400);
     }
-    console.log((req.files.file as UploadedFile).name)
-    res.send()
   };
   
   private downloadFile = async (
