@@ -31,12 +31,13 @@ export const removeAccessToken = async () => {
   return res.data;
 }
 
-export const getContent = async () => {
+export const getContent = async (filename) => {
   try {
     const res = await axios.post(
       `${API_BASE_URL}/download`,
       {
-        "filename": "rick-roll-rick-ashley.gif"
+        // "filename": "rick-roll-rick-ashley.gif"
+        "filename": filename
       },
       {
         responseType: 'blob',
@@ -47,4 +48,14 @@ export const getContent = async () => {
   } catch (err) {
     return {uri: null, error: err};
   }
+}
+
+export const listContents = async () => {
+  const res = await axios.post(
+    `${API_BASE_URL}/list`,
+    {
+      withCredentials: true
+    }
+  );
+  return res.data;
 }

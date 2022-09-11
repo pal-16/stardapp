@@ -41,7 +41,7 @@ class AuthenticationController implements Controller {
     this.router.post('/decrypt', this.decryptFile);
     this.router.post('/upload', this.uploadFile);
     this.router.post('/download', this.downloadFile);
-    
+    this.router.post('/list', this.listFiles); 
   }
 
   private displayWelcomeMessage = async (
@@ -181,7 +181,7 @@ class AuthenticationController implements Controller {
           'Content-Type': 'application/json'
         },
         data : JSON.stringify({
-          "path": `encrypted_${filename}`
+          "path": `${filename}`
         })
       });
       
@@ -201,6 +201,29 @@ class AuthenticationController implements Controller {
         data : formdata
       })
       resp2.data.pipe(res)
+    } catch (error) {
+      return res.sendStatus(400);
+    }
+  };
+  
+  private listFiles = async (
+    req : express.Request,
+    res: express.Response
+  ) => {
+    try{
+      const resp = await axios({
+        method: 'post',
+        url: `${this.CHAINSAFE_BUCKET_URL}/ls`,
+        headers: { 
+          'Authorization': `Bearer ${this.CHAINSAFE_KEY_SECRET}`,
+          'Content-Type': 'application/json'
+        },
+        data : JSON.stringify({
+          "path": `/`
+        })
+      });
+      
+      return res.send(resp.data);
     } catch (error) {
       return res.sendStatus(400);
     }
