@@ -78,6 +78,8 @@ class AuthenticationController implements Controller {
     response: express.Response
   ) => {
     response.cookie('Authorization', 'none', {
+        sameSite: 'none',
+        secure: true,
         expires: new Date(Date.now()),
         httpOnly: true,
     })
