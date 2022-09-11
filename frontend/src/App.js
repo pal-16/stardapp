@@ -59,6 +59,7 @@ const App = () => {
     setContent(item);
     if (!(accessToken && accessToken.length>0)) {
       setContentUri("")
+      alert('Looks like either you are disconnected or connected with a wallet that does not contain a Fanstop NFT!')
     }
   }
 
@@ -85,7 +86,7 @@ const App = () => {
               return (
                 <div>
                   <section className="intro">
-                    <div className="mask d-flex align-items-center h-100">
+                    <div className="mask d-flex align-middle align-items-center h-100">
                       <div className="container">
                         <div className="row justify-content-center">
                           <div className="col-12">
@@ -98,14 +99,18 @@ const App = () => {
                                     (<img src={contentUri} alt="loading..." height="400px"/>)
                                     :
                                     (
-                                      <div className="align-items-center justify-content-center" style={{ height: "400px"}}>
-                                        <div>
+                                      <div style={{ height: "400px", paddingTop: "100px"}}>
+                                        <p className="fw-normal" >
                                           Please connect your wallet and if you have one of the Fanstop NFTs in them, then only you would be able to view my content!
                                           <br></br>
                                           The content are stored on IPFS and you can't access them even if I make their CIDs public!
                                           <br></br>
                                           So, get a Fanstop NFT now to watch my NFT-exclusive content!
-                                        </div>
+                                        </p>
+                                        <p className="fw-bolder">
+                                          If you are a judge/panelist of Data Dao Hackathon, then please follow this instructions <a href=''>here</a>!
+                                        </p>
+                                       
                                       </div>
                                     )
                                   }
@@ -117,14 +122,16 @@ const App = () => {
                                       <tr>
                                         <th scope="col">Name</th>
                                         <th scope="col">CID</th>
+                                        <th scope="col"></th>
                                       </tr>
                                     </thead>
                                     <tbody>
                                     {contentsList.map(item => {
                                         return (
                                           <tr key={item.cid}>
-                                            <td><button className={accessToken && accessToken.length > 0 ? "btn btn-outline-success": "btn btn-outline-danger"} onClick={()=> handleItemClick(item.name)}>{ String(item.name).split('encrypted_')[1] }</button></td>
+                                            <td>{ String(item.name).split('encrypted_')[1] }</td>
                                             <td>{ item.cid }</td>
+                                            <td><button className={accessToken && accessToken.length > 0 ? "btn btn-outline-success": "btn btn-outline-danger"} onClick={()=> handleItemClick(item.name)}>View</button></td>
                                             {/* <td>{ item.content_type }</td>
                                             <td>{ item.size }</td>
                                             <td>{ item.created_at }</td> */}
