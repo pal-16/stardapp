@@ -12,6 +12,7 @@ export const connectWallet = async () => {
 };
 
 export const disconnectWallet = async () => {
+  document.cookie = 'Authorization=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   await wallet.clearActiveAccount();
 }
 

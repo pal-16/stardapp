@@ -78,7 +78,7 @@ class AuthenticationController implements Controller {
     response: express.Response
   ) => {
     response.cookie('Authorization', 'none', {
-        expires: new Date(Date.now() + 5 * 1000),
+        expires: new Date(Date.now()),
         httpOnly: true,
     })
     response.status(200).json({ success: true, message: 'User logged out successfully' })
