@@ -17,6 +17,7 @@ Fanstop is a decentralized-yet-private content sharing platform for creators whe
 1. Store content on IPFS(so decentralized)
 2. Remain worry-free because their content are first encrypted and then stored on IPFS
 3. Token-gate their content; so only that fan who possesses a certain NFT can truly access the data (Of course, the NFT would be provided/auctioned by the creator and it would be a guarantee of access to their private content!)
+4. **With [Chainsafe](https://chainsafe.io/), 20GB content could be hosted for free!**
 
 ### High-level positive flow:
 - User has the correct NFT in their wallet
@@ -63,6 +64,8 @@ This project is developed as part of [Data Dao Hackathon][Data Dao Hackathon]. I
 The demo video is here: 
 
 The app is deployed at https://fanstop-frontend.vercel.app/
+
+The app uses [Chainsafe](https://chainsafe.io/) and its APIs for decentralized storage on IPFS.
 
 The app is based on Jakartanet and the related FA2 smart contract is deployed [here][Demo FA2 Contract] (Contract address: KT1X2ifoZhfgz1AhYfHVV36P1sf9UwJS56HY)
 
