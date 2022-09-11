@@ -32,7 +32,7 @@ const App = () => {
       }
       if (error) {
         // alert(error);
-        setContentUri('');
+        setContentUri("");
       } else {
         setContentUri(uri);
       }
@@ -55,6 +55,13 @@ const App = () => {
     setLoading(false);
   };
 
+  const handleItemClick = async (item) => {
+    setContent(item);
+    if (!(accessToken && accessToken.length>0)) {
+      setContentUri("")
+    }
+  }
+
   return (
     <div className="h-100">
       <Navbar
@@ -68,8 +75,8 @@ const App = () => {
         setAccessToken={setAccessToken}
         onGetContent={onGetContent}
       />
-      <div className="d-flex flex-column justify-content-center align-items-center h-100">
-        <div className="mt-2">
+      <div className="d-flex flex-column justify-content-center h-100">
+        {/* <div className="mt-4"> */}
           {(() => {
             let table;
             if (contentsList && contentsList.length > 0) {
@@ -77,32 +84,63 @@ const App = () => {
               console.log(contentsList);
               return (
                 <div>
-                  <table>
-                    <thead>
-                      <tr>
-                        <td>name</td>
-                        <td>cid</td>
-                        <td>content_type</td>
-                        <td>size</td>
-                        <td>created_at</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {contentsList.map(item => {
-                        return (
-                          <tr key={item.cid}>
-                            <td><button onClick={()=> setContent(item.name)}>{ item.name }</button></td>
-                            <td>{ item.cid }</td>
-                            <td>{ item.content_type }</td>
-                            <td>{ item.size }</td>
-                            <td>{ item.created_at }</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                  <br />
-                  <img src={contentUri} alt="loading..." />
+                  <section className="intro">
+                    <div className="mask d-flex align-items-center h-100">
+                      <div className="container">
+                        <div className="row justify-content-center">
+                          <div className="col-12">
+                            <div className="card">
+                              <div className="card-body p-0">
+                                <center>
+                                  {
+                                    contentUri && contentUri.length>0
+                                    ?
+                                    (<img src={contentUri} alt="loading..." height="400px"/>)
+                                    :
+                                    (
+                                      <div className="align-items-center justify-content-center" style={{ height: "400px"}}>
+                                        <div>
+                                          Please connect your wallet and if you have one of the Fanstop NFTs in them, then only you would be able to view my content!
+                                          <br></br>
+                                          The content are stored on IPFS and you can't access them even if I make their CIDs public!
+                                          <br></br>
+                                          So, get a Fanstop NFT now to watch my NFT-exclusive content!
+                                        </div>
+                                      </div>
+                                    )
+                                  }
+                                </center>
+                                
+                                <div className="table-responsive table-scroll m-2" data-mdb-perfect-scrollbar="true" style={{position: "relative", height: "400px"}}>
+                                  <table className="table table-striped mb-0">
+                                    <thead style={{backgroundColor: "#002d72"}}>
+                                      <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">CID</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    {contentsList.map(item => {
+                                        return (
+                                          <tr key={item.cid}>
+                                            <td><button className={accessToken && accessToken.length > 0 ? "btn btn-outline-success": "btn btn-outline-danger"} onClick={()=> handleItemClick(item.name)}>{ String(item.name).split('encrypted_')[1] }</button></td>
+                                            <td>{ item.cid }</td>
+                                            {/* <td>{ item.content_type }</td>
+                                            <td>{ item.size }</td>
+                                            <td>{ item.created_at }</td> */}
+                                          </tr>
+                                        );
+                                      })}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
                 </div>
               );
             }
@@ -114,7 +152,7 @@ const App = () => {
             );
           })()}
           
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );
