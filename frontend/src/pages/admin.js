@@ -28,17 +28,8 @@ class Admin extends Component {
 	onFileUpload = () => {
     // Create an object of formData
     const formData = new FormData();
-    
-    // Update the formData object
-    // formData.append('key', '12345678');
-    // formData.append('salt', '12345678');
-    // formData.append('algo', 'des');
     formData.append('file', this.state.selectedFile);
     
-    // Details of the uploaded file
-    console.log(this.state.selectedFile);
-    
-    // Request made to the backend api
     // Send formData object
     axios.post(`${API_BASE_URL}/upload`, formData);
 	};
