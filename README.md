@@ -1,16 +1,16 @@
 # Fanstop
 _Share decentralized-yet-private(thanks to IPFS) content with your top fans!_
 
-## What is private content economy?
-There are content creators who want to create very quality content and want only those top fans to access these content who provide direct monetization to them. We are calling the economy around this as private content economy. 
+## What is the private content economy?
+There are content creators who want to create very quality content and want only those top fans to access these content who provide direct monetization to them. We are calling the economy around this as the private content economy.
 
 ## Problems with the current private content economy?
 ### Dependency on centralized system
-What if the service on which the creator hosted their content goes down? What if the service decides to ban that particular creator for whatsoever reason? The creator is helpless before such centralized systems!
+What if the service on which the creator hosted their content goes down? What if the service decides to ban that particular creator for whatever reason? The creator is helpless before such centralized systems!
 ### High commissions to store content
 The centralized services charge a significant portion of the creators' earning as maintenance fee: this leads to lesser income of the creator.
 ### Not encrypted, prone to leaks
-It is not new to hear of news that due to certain vulnerability in the centralized system, the content got leaked. On top of it, they rarely care to encrypt the data and then store.
+It is not new to hear of news that due to certain vulnerabilities in the centralized system, the content got leaked. On top of it, they rarely care to encrypt the data and then store it.
 
 ## Solution: Enters Fanstop 😎
 Fanstop is a decentralized-yet-private content sharing platform for creators where they can:
@@ -20,30 +20,30 @@ Fanstop is a decentralized-yet-private content sharing platform for creators whe
 4. **With [Chainsafe](https://chainsafe.io/), 20GB content could be hosted for free!**
 
 ### High-level positive flow:
-- User has the correct NFT in their wallet
-- User goes to [app][Demo App] and connects his wallet
+- User has the correct NFT in their wallet.
+- User goes to [app][Demo App] and connects his wallet.
 - Voila! He is able to view the content!
 
 ### High-level negative flow (A):
-- User goes to [app][Demo App] but does not connect his wallet and tries to view a content.
+- User goes to the app but does not connect his wallet and tries to view the content.
 - Oops! He is unable to view the content!
 
 ### High-level negative flow (B):
-- User has a random NFT in their wallet
-- User goes to [app][Demo App] and connects his wallet
+- User has a random NFT in their wallet.
+- User goes to [app][Demo App] and connects his wallet.
 - Oops! He is unable to view the content!
 
 ### Technical flow (positive)
-- User has the correct NFT in their wallet
-- User goes to [app][Demo App] and connects his wallet
-- They sign a nonce and frontend sends a payload containing the nonce, signature and wallet public address to the backend
+- User has the correct NFT in their wallet.
+- User goes to [app][Demo App] and connects his wallet.
+- They sign a nonce and frontend sends a payload containing the nonce, signature and wallet public address to the backend.
 - Backend finds the signature to be valid. It also finds that the wallet public address does contain the correct NFT.
 - It generates an access token and sends it to frontend.
 - Frontend piggybacks this access token on the request to the backend server that enables the user to view the private content.
 - Backend server sees that the frontend is trying to access the private content. It checks if the access token is valid and finds it to be valid.
 - Backend server fetches the encrypted content from IPFS, decrypts it using its secret key and sends the decrypted content to the frontend.
 - Voila! The user is able to view the content!
-- (Note that the creator uploads content to IPFS via [admin interface][Demo App Admin]. The admin interface sends the content to backend where it is first encrypted by backend's secret key and then the encrypted content is uploaded to IPFS.)
+- (Note that the creator uploads content to IPFS via the [admin interface][Demo App Admin]. The admin interface sends the content to the backend where it is first encrypted by the backend's secret key and then the encrypted content is uploaded to IPFS.)
 
 ### Technical flow (negative)
 - In any negative flow, the user won't be having a valid access token. The flow stops here itself and the content is never fetched.
@@ -58,7 +58,7 @@ The app is based on Jakartanet and the related FA2 smart contract is deployed [h
 The smart contract is in the `smart-contracts` directory.
 
 ## [Data Dao Hackathon 2022][Data Dao Hackathon]
-This project is developed as part of [Data Dao Hackathon][Data Dao Hackathon]. If you are a panelist/judge/reviewer, please check out the following steps.
+This project is developed as part of the [Data Dao Hackathon][Data Dao Hackathon]. If you are a panelist/judge/reviewer, please check out the following steps.
 
 ### For the panelists/judges/reviewers of Data Dao Hackathon 2022
 The demo video is here: 
@@ -88,7 +88,7 @@ To check the unhappy path, you could just use any random wallet to connect to th
 
 <ins><b>Interacting on Admin interface</b></ins>
 
-If you want to upload a new content, you can use [the admin interface][Demo App Admin]. You can use any username/password in the browser prompt to remove it and move forward. For testing purpose, it would be a good idea to upload a small file 😅
+If you want to upload new content, you can use [the admin interface][Demo App Admin]. You can use any username/password in the browser prompt to remove it and move forward. For testing purpose, it would be a good idea to upload a small file 😅
 
 <ins><b> App testing </b></ins>
 The [poc app][Demo App] runs fine on the following platforms:
