@@ -60,6 +60,8 @@ const App = () => {
       <Navbar
         account={account}
         setAccount={setAccount}
+        contentUri={contentUri}
+        setContentUri={setContentUri}
         error={error}
         setError={setError}
         accessToken={accessToken}
@@ -89,8 +91,8 @@ const App = () => {
                       {contentsList.map(item => {
                         return (
                           <tr key={item.cid}>
-                            <td>{ item.name }</td>
-                            <td><button onClick={()=> setContent(item.name)}>{ item.cid }</button></td>
+                            <td><button onClick={()=> setContent(item.name)}>{ item.name }</button></td>
+                            <td>{ item.cid }</td>
                             <td>{ item.content_type }</td>
                             <td>{ item.size }</td>
                             <td>{ item.created_at }</td>

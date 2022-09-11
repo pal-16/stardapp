@@ -5,6 +5,8 @@ const Navbar = (props) => {
   const  {
     account,
     setAccount,
+    contentUri,
+    setContentUri,
     setError,
     setAccessToken,
     onGetContent,
@@ -30,6 +32,7 @@ const Navbar = (props) => {
     setAccount("");
     const resp = await removeAccessToken();
     setAccessToken(null);
+    setContentUri('');
     console.log(resp);
   };
 

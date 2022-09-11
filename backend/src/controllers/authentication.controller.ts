@@ -40,7 +40,7 @@ class AuthenticationController implements Controller {
     this.router.post('/encrypt', this.encryptFile);
     this.router.post('/decrypt', this.decryptFile);
     this.router.post('/upload', this.uploadFile);
-    this.router.post('/download', this.downloadFile);
+    this.router.post('/download', authMiddleware, this.downloadFile);
     this.router.post('/list', this.listFiles); 
   }
 
