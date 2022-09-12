@@ -90,6 +90,14 @@ To check the unhappy path, you could just use any random wallet to connect to th
 
 If you want to upload new content, you can use [the admin interface][Demo App Admin]. You can use any username/password in the browser prompt to remove it and move forward. For testing purpose, it would be a good idea to upload a small file 😅
 
+<ins><b>Interacting with Chainsafe storage used in this demo app</b></ins>
+
+If you want to interact with the Chainsafe storage which is being used in this demo app, you can do via their APIs. Following are the keys that you might need:
+
+- CHAINSAFE_KEY_ID=OYWNOGUSZNWMPGUSQQUI
+-  CHAINSAFE_KEY_SECRET=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjI4ODA2NDAsImNuZiI6eyJqa3UiOiIvY2VydHMiLCJraWQiOiI5aHE4bnlVUWdMb29ER2l6VnI5SEJtOFIxVEwxS0JKSFlNRUtTRXh4eGtLcCJ9LCJ0eXBlIjoiYXBpX3NlY3JldCIsImlkIjo4NjA2LCJ1dWlkIjoiM2M1NmYzMjEtYTk5Yi00MzA0LWFlNzEtNzJjNjU0MWM0Y2VhIiwicGVybSI6eyJiaWxsaW5nIjoiKiIsInNlYXJjaCI6IioiLCJzdG9yYWdlIjoiKiIsInVzZXIiOiIqIn0sImFwaV9rZXkiOiJPWVdOT0dVU1pOV01QR1VTUVFVSSIsInNlcnZpY2UiOiJzdG9yYWdlIn0.IDNCAGlNIvtr5T5NnL0IK8VVLXh1WLqvMPupvBWL0HPW2rikuKmURK2zW-tjCz5DDrFaXJlx6dkVhV-4lCsYhg
+- CHAINSAFE_BUCKET_URL=https://api.chainsafe.io/api/v1/bucket/12110635-9fce-419a-83ef-4f843965abbc
+
 <ins><b> App testing </b></ins>
 The [poc app][Demo App] runs fine on the following platforms:
 | Browser | Version | Works in incognito mode too? | Comments |
