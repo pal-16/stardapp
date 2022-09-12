@@ -108,7 +108,10 @@ const App = () => {
                                           So, get a Fanstop NFT now to watch my NFT-exclusive content!
                                         </p>
                                         <p className="fw-bolder">
-                                          If you are a judge/panelist of Data Dao Hackathon, then please follow this instructions <a href=''>here</a>!
+                                          If you are a judge/panelist of Data Dao Hackathon, then please follow this instructions <a href='https://github.com/ankitshubham97/fanstop#data-dao-hackathon-2022'>here</a>!
+                                        </p>
+                                        <p className="fw-bolder">
+                                          <a href='https://fanstop-frontend.vercel.app/admin'>Link to admin interface</a>!
                                         </p>
                                        
                                       </div>

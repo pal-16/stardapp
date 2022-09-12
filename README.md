@@ -61,7 +61,7 @@ The smart contract is in the `smart-contracts` directory.
 This project is developed as part of the [Data Dao Hackathon][Data Dao Hackathon]. If you are a panelist/judge/reviewer, please check out the following steps.
 
 ### For the panelists/judges/reviewers of Data Dao Hackathon 2022
-The demo video is here: 
+The demo video is here: https://www.youtube.com/watch?v=aCtSajvr0LQ
 
 The app is deployed at https://fanstop-frontend.vercel.app/
 
@@ -107,7 +107,7 @@ You could also choose to run your own instance of the backend and the frontend. 
 [Data Dao Hackathon]: <https://fil-toronto.com/hackathon/>
 [README Frontend]: <../main/frontend/README.md>
 [README Backend]: <../main/backend/README.md>
-[Demo Video]: <>
+[Demo Video]: <https://www.youtube.com/watch?v=aCtSajvr0LQ>
 [Demo App]: <https://fanstop-frontend.vercel.app/>
 [Demo App Admin]: <https://fanstop-frontend.vercel.app/admin>
 [Demo Backend]: <https://fanstop-datadao.herokuapp.com/>
