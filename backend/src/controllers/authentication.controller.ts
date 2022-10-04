@@ -1,4 +1,4 @@
-import AuthNft, { GetTokenResponseSuccess } from 'authfa2';
+import AuthNft, { GetTokenResponseSuccess } from 'authnft';
 import axios, { ResponseType } from 'axios';
 import FormData from 'form-data';
 import express from 'express';
@@ -14,12 +14,20 @@ import {
   cryptFileWithSalt,
 } from "../utils";
 
+import {
+  deployedContractAbi,
+  deployedContractAddress,
+  networkEndpoint,
+} from '../constants';
+
 class AuthenticationController implements Controller {
   public router = express.Router();
   public authnft = AuthNft();
   public _ = this.authnft.init({
     secret: process.env.JWT_SECRET ?? '',
-    nftContractAddress: process.env.NFT_CONTRACT_ADDRESS ?? '',
+    networkEndpoint,
+    deployedContractAddress,
+    deployedContractAbi,
   });
 
   public CHAINSAFE_BUCKET_URL = process.env.CHAINSAFE_BUCKET_URL ?? '';
@@ -55,13 +63,14 @@ class AuthenticationController implements Controller {
     request: express.Request,
     response: express.Response
   ) => {
-    const { nonce, signature, walletPublicKey, walletPublicAddress } =
+    const { nonce, signature, walletPublicAddress, nftContractAddress, nftId } =
       request.body;
     const tokenResponse = await this.authnft.getToken({
       nonce,
       signature,
-      walletPublicKey,
       walletPublicAddress,
+      nftContractAddress,
+      nftId,
     });
     if (tokenResponse.code === 200) {
       const data = tokenResponse.data as GetTokenResponseSuccess;
