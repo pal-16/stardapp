@@ -60,7 +60,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Showcase photos={photos}/>}/>
-          <Route path="/resource/:id" element={<Resource />}/>
+          <Route path="/resource/:slug" element={<Resource />}/>
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
