@@ -17,12 +17,6 @@ const App = () => {
   const [rerender, setRerender] = useState(false);
   const [photos, setPhotos] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      setAccount(JSON.stringify(account));
-    })();
-  }, []);
-
   const onGetContent = async () => {
     try {
       setLoading(true);
@@ -56,6 +50,7 @@ const App = () => {
         accessToken={accessToken}
         setAccessToken={setAccessToken}
         onGetContent={onGetContent}
+        setPhotos={setPhotos}
       />
       <BrowserRouter>
         <Routes>

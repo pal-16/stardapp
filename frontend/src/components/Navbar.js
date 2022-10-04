@@ -8,6 +8,7 @@ const Navbar = (props) => {
     setError,
     setAccessToken,
     onGetContent,
+    setPhotos,
   } = props;
 
   const onConnectWallet = async () => {
@@ -29,6 +30,7 @@ const Navbar = (props) => {
     setAccount("");
     const resp = await removeAccessToken();
     setAccessToken(null);
+    setPhotos([]);
     console.log(resp);
   };
 
