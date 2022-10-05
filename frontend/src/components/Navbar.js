@@ -38,13 +38,6 @@ const Navbar = (props) => {
     <header className="navbar">
     <img src="../img/tesla.PNG" alt="logo" className="h-6"/>
     <div>
-      <a href="#" className="navLink">Model S</a>
-      <a href="#" className="navLink">Model S</a>
-      <a href="#" className="navLink">Model S</a>
-      <a href="#" className="navLink">Model S</a>
-      <a href="#" className="navLink">Model S</a>
-    </div>
-    <div>
       {(() => {
         const publicAddr = account;
         if (publicAddr && publicAddr !== "") {
