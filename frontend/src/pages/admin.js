@@ -29,9 +29,21 @@ class Admin extends Component {
     // Create an object of formData
     const formData = new FormData();
     formData.append('file', this.state.selectedFile);
+
+    const options = {
+      onUploadProgress: (progressEvent) => {
+        const {loaded, total} = progressEvent;
+        let percent = Math.floor( (loaded * 100) / total )
+        console.log( `${loaded}kb of ${total}kb | ${percent}%` );
+
+        if( percent < 100 ){
+          this.setState({ uploadPercentage: percent })
+        }
+      }
+    }
     
     // Send formData object
-    axios.post(`${API_BASE_URL}/upload`, formData);
+    axios.post(`${API_BASE_URL}/upload`, formData, options);
 	};
 	
 	// File content to be displayed after

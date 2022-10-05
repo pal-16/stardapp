@@ -24,7 +24,7 @@
   "scripts": {
     "start": "PORT=3001 react-scripts start",
     "dev": "ENV=development PORT=3001 react-scripts start",
-    "build": "react-scripts build",
+    "build": "tailwind build -i public/main.css -o public/tailwind.css && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "watch": "tailwind build -i public/main.css -o public/tailwind.css -w"
@@ -52,5 +52,8 @@
     "postcss": "^8.4.17",
     "react-router-dom": "^6.4.1",
     "tailwindcss": "^3.1.8"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }

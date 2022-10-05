@@ -23,7 +23,11 @@ html {
 }
 
 .navLink {
-  @apply text-2xl font-semibold text-[#181b21] mx-[0.8rem] px-[0.8rem] py-[0.4rem] rounded-[0.8rem] bg-transparent hover:bg-[#181b21] hover:bg-opacity-10 transition-all duration-500
+  @apply text-2xl font-semibold text-[#181b21] mx-[0.8rem] px-[0.8rem] py-[0.4rem] rounded-[0.8rem] bg-transparent
+}
+
+.navLink-hover {
+  @apply hover:bg-[#181b21] hover:bg-opacity-10 transition-all duration-500
 }
 
 .showcase {

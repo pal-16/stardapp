@@ -1,5 +1,6 @@
 import { getAccessToken, removeAccessToken } from "../utils/rest";
 import { connectWallet, disconnectWallet } from "../utils/connectWallet";
+import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
   const  {
@@ -36,20 +37,22 @@ const Navbar = (props) => {
 
   return (
     <header className="navbar">
-    <img src="../img/tesla.PNG" alt="logo" className="h-6"/>
+      <Link to={`/`}>
+        <img src="../logo.png" alt="logo" className="h-28"/>
+      </Link>  
     <div>
       {(() => {
         const publicAddr = account;
         if (publicAddr && publicAddr !== "") {
           return <button className="navLink" disabled>Connected to {publicAddr}</button>;
         }
-        return <button onClick={onConnectWallet} className="navLink"> Connect Wallet </button>;
+        return <button onClick={onConnectWallet} className="navLink navLink-hover"> Connect Wallet </button>;
       })()}
       &nbsp;
       {(() => {
         const publicAddr = account;
         if (publicAddr && publicAddr !== "") {
-          return <button onClick={ondisconnectWallet} className="navLink">Disconnect</button>;
+          return <button onClick={ondisconnectWallet} className="navLink navLink-hover">Disconnect</button>;
         }
       })()}
     </div>

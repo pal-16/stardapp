@@ -7,6 +7,8 @@ import { getContent, listContents } from "./utils/rest";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admin from "./pages/admin";
 import Resource from "./components/resource";
+import FilesView from "./components/FilesView";
+import Sidebar from "./components/Sidebar";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -42,21 +44,23 @@ const App = () => {
   
   return (
     <div>
-      <Navbar
-        account={account}
-        setAccount={setAccount}
-        error={error}
-        setError={setError}
-        accessToken={accessToken}
-        setAccessToken={setAccessToken}
-        onGetContent={onGetContent}
-        setPhotos={setPhotos}
-      />
       <BrowserRouter>
+        <Navbar
+          account={account}
+          setAccount={setAccount}
+          error={error}
+          setError={setError}
+          accessToken={accessToken}
+          setAccessToken={setAccessToken}
+          onGetContent={onGetContent}
+          setPhotos={setPhotos}
+        />
         <Routes>
           <Route path="/" element={<Showcase photos={photos}/>}/>
           <Route path="/resource/:slug" element={<Resource />}/>
           <Route path="/admin" element={<Admin />} />
+          <Route path="/fileitem" element={<FilesView photos={photos}/>} />
+          <Route path="/admin/:slug" element={<Sidebar photos={photos}/>} />
         </Routes>
       </BrowserRouter>
     </div>
