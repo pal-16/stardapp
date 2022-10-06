@@ -72,7 +72,6 @@ const App = () => {
           <Route path="/" element={<Showcase photos={photos}/>}/>
           <Route path="/resource/:slug" element={<SingleFileView />}/>
           <Route path="/admin/:slug" element={<Sidebar photos={photos}/>} />
-          <Route path="/donate/" element={<DonateModal onClose={()=>{}}/>} />
         </Routes>
       </BrowserRouter>
     </div>
