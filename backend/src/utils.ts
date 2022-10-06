@@ -1,21 +1,22 @@
 import * as crypto from "crypto";
 import fileUpload, { UploadedFile } from "express-fileupload";
-import { Response } from 'express';
+import express from 'express';
+import axios from "axios";
 
 export const paramMissingError = 'One or more of the required parameters was missing.';
 
 type AlgoList = {
-    [key: string]: {
-        keyLength: number,
-        ivLength: number,
-    }
+  [key: string]: {
+    keyLength: number,
+    ivLength: number,
+  }
 }
 
 export const algoList: AlgoList = {
-    'des': {
-        keyLength: 8,
-        ivLength: 8,
-    }
+  'des': {
+    keyLength: 8,
+    ivLength: 8,
+  }
 }
 
 // Types
@@ -66,25 +67,48 @@ const checkParams = ({ algo, key, salt }: Params): boolean => {
     return false;
   }
   const chosenAlgo = algoList[algo]
-  if (!chosenAlgo || key.length !== chosenAlgo.keyLength || salt.length !== chosenAlgo.ivLength ) {
+  if (!chosenAlgo || key.length !== chosenAlgo.keyLength || salt.length !== chosenAlgo.ivLength) {
     return false
   }
   else return true;
 };
 
 // Set proper headers for the response
-const setupHeaders = (res: Response, file?: UploadedFile | undefined) => {
-    if (file) {
-        res.writeHead(200, {
-            'Content-Type': file.mimetype,
-            'Content-disposition': 'attachment;filename=' + 'encrypted_' + file.name,
-            'Connection': 'close',
-        })
-    } else {
-        res.writeHead(200, {
-            'Connection': 'close'
-        })
-    }
+const setupHeaders = (res: express.Response, file?: UploadedFile | undefined) => {
+  if (file) {
+    res.writeHead(200, {
+      'Content-Type': file.mimetype,
+      'Content-disposition': 'attachment;filename=' + 'encrypted_' + file.name,
+      'Connection': 'close',
+    })
+  } else {
+    res.writeHead(200, {
+      'Connection': 'close'
+    })
+  }
 }
 
-export { cryptFileWithSalt, checkFile, checkParams, setupHeaders };
+const listFilesByBucket = async ({chainsafeBucketUrl} : {chainsafeBucketUrl: string}): Promise<{data:any, error:any}> => {
+  try {
+    const resp = await axios({
+      method: 'post',
+      url: `${chainsafeBucketUrl}/ls`,
+      headers: {
+        'Authorization': `Bearer ${process.env.CHAINSAFE_KEY_SECRET}`,
+        'Content-Type': 'application/json'
+      },
+      data: JSON.stringify({
+        "path": `/`
+      })
+    });
+    return {data: resp.data, error: undefined};
+  } catch (error) {
+    return {data: undefined, error: error};
+  }
+};
+
+const getRandomInt = (max: number): number => {
+  return Math.floor(Math.random() * max);
+}
+
+export { cryptFileWithSalt, checkFile, checkParams, setupHeaders, listFilesByBucket, getRandomInt };

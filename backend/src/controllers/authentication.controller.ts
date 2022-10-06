@@ -14,6 +14,8 @@ import {
   checkParams,
   setupHeaders,
   cryptFileWithSalt,
+  listFilesByBucket,
+  getRandomInt,
 } from "../utils";
 
 import {
@@ -21,6 +23,8 @@ import {
   deployedContractAddress,
   networkEndpoint,
 } from '../constants';
+import { uniqueNamesGenerator, Config, starWars, languages, colors, adjectives  } from 'unique-names-generator';
+import { Readable } from 'stream';
 
 class AuthenticationController implements Controller {
   public router = express.Router();
@@ -33,11 +37,19 @@ class AuthenticationController implements Controller {
   });
 
   public CHAINSAFE_BUCKET_URL = process.env.CHAINSAFE_BUCKET_URL ?? '';
+  public CHAINSAFE_NFT_ART_BUCKET_URL = process.env.CHAINSAFE_NFT_ART_BUCKET_URL ?? '';
+  public CHAINSAFE_NFT_TOKEN_URI_BUCKET_URL = process.env.CHAINSAFE_NFT_TOKEN_URI_BUCKET_URL ?? '';
   public CHAINSAFE_KEY_SECRET = process.env.CHAINSAFE_KEY_SECRET ?? '';
   public ENCRYPTION_KEY = process.env.ENCRYPTION_KEY ?? '';
   public ENCRYPTION_SALT = process.env.ENCRYPTION_SALT ?? '';
   public ENCRYPTION_ALGO = process.env.ENCRYPTION_ALGO ?? '';
   public SELF_API_URL = process.env.SELF_API_URL ?? '';
+
+  public nameGeneratorConfig: Config = {
+    dictionaries: [ adjectives, colors, languages, starWars ],
+    separator: ' ',
+    style: 'capital'
+  }
 
   constructor() {
     this.initializeRoutes();
@@ -53,6 +65,7 @@ class AuthenticationController implements Controller {
     this.router.post('/download', readAuthMiddleware, this.downloadFile);
     this.router.post('/list', readAuthMiddleware, this.listFiles); 
     this.router.get('/contract/:nftContractAddress', this.getContractDetails); 
+    this.router.get('/token-uri/', this.generateTokenUri); 
   }
 
   private displayWelcomeMessage = async (
@@ -223,23 +236,12 @@ class AuthenticationController implements Controller {
     req : express.Request,
     res: express.Response
   ) => {
-    try{
-      const resp = await axios({
-        method: 'post',
-        url: `${this.CHAINSAFE_BUCKET_URL}/ls`,
-        headers: { 
-          'Authorization': `Bearer ${this.CHAINSAFE_KEY_SECRET}`,
-          'Content-Type': 'application/json'
-        },
-        data : JSON.stringify({
-          "path": `/`
-        })
-      });
-      
-      return res.send(resp.data);
-    } catch (error) {
-      return res.sendStatus(400);
+    const {data, error} = await listFilesByBucket({chainsafeBucketUrl: this.CHAINSAFE_BUCKET_URL});
+    if (error) {
+      res.sendStatus(400);
+      return;
     }
+    res.send(data);
   };
 
   private getContractDetails = async (
@@ -248,6 +250,64 @@ class AuthenticationController implements Controller {
   ) => {
     const { nftContractAddress } = request.params;
     return response.send(await getContractDetails({nftContractAddress}));
+  };
+
+  private generateTokenUri = async (
+    _: express.Request,
+    response: express.Response
+  ) => {
+    const title: string = uniqueNamesGenerator(this.nameGeneratorConfig);
+    const description = `Proud owner of Taylor's utility NFT!`;
+    const {data, error} = await listFilesByBucket({chainsafeBucketUrl: this.CHAINSAFE_NFT_ART_BUCKET_URL});
+    if (error) {
+      response.sendStatus(400);
+      return;
+    }
+    const files = data as any[];
+    const randomFile = files[getRandomInt(files.length)] ?? files[0];
+    if (!randomFile || !randomFile.cid) {
+      response.sendStatus(400);
+      return;
+    }
+    const stream = Readable.from(JSON.stringify({
+      title,
+      description,
+      image: `https://ipfs.io/ipfs/${randomFile.cid}`
+    }));
+    const filename = `token_uri_${Date.now()}.json`;
+    let formdata = new FormData();
+    formdata.append('path', ``);
+    formdata.append('file', stream, filename);
+  
+    await axios({
+      method: 'post',
+      url: `${this.CHAINSAFE_NFT_TOKEN_URI_BUCKET_URL}/upload`,
+      responseType: 'stream' as ResponseType,
+      headers: { 
+        'Authorization': `Bearer ${this.CHAINSAFE_KEY_SECRET}`,
+        'Content-Type': 'application/json'
+      },
+      data : formdata
+    });
+
+    const resp = await axios({
+      method: 'post',
+      url: `${this.CHAINSAFE_NFT_TOKEN_URI_BUCKET_URL}/file`,
+      headers: { 
+        'Authorization': `Bearer ${this.CHAINSAFE_KEY_SECRET}`,
+        'Content-Type': 'application/json'
+      },
+      data : JSON.stringify({
+        "path": `${filename}`
+      })
+    });
+
+    const cid = resp.data?.content?.cid;
+    if (!cid) {
+      response.sendStatus(400);
+      return;
+    }
+    response.send({tokenUri: `https://ipfs.io/ipfs/${cid}`});
   };
 }
 

@@ -94,6 +94,7 @@
     "fs": "^0.0.1-security",
     "helmet": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
+    "unique-names-generator": "^4.7.1",
     "web3": "^1.7.4"
   },
   "devDependencies": {

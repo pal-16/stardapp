@@ -77,3 +77,18 @@ export const getContractDetails = async () => {
     return { data: null, error };
   }
 };
+
+export const generateTokenUri = async () => {
+  try{
+    const res = await axios.get(
+      `${API_BASE_URL}/token-uri/`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(res.data);
+    return { data: res.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
