@@ -1,4 +1,4 @@
-import AuthNft, { GetTokenResponseSuccess } from './authentication.service';
+import AuthNft, { getContractDetails, GetTokenResponseSuccess } from './authentication.service';
 import axios, { ResponseType } from 'axios';
 import FormData from 'form-data';
 import express from 'express';
@@ -52,6 +52,7 @@ class AuthenticationController implements Controller {
     this.router.post('/upload', writeAuthMiddleware, this.uploadFile);
     this.router.post('/download', readAuthMiddleware, this.downloadFile);
     this.router.post('/list', readAuthMiddleware, this.listFiles); 
+    this.router.get('/contract/:nftContractAddress', this.getContractDetails); 
   }
 
   private displayWelcomeMessage = async (
@@ -96,7 +97,6 @@ class AuthenticationController implements Controller {
     })
     response.status(200).json({ success: true, message: 'User logged out successfully' })
 }
-
 
   private encryptFile = async (
     req : express.Request,
@@ -240,6 +240,14 @@ class AuthenticationController implements Controller {
     } catch (error) {
       return res.sendStatus(400);
     }
+  };
+
+  private getContractDetails = async (
+    request: express.Request,
+    response: express.Response
+  ) => {
+    const { nftContractAddress } = request.params;
+    return response.send(await getContractDetails({nftContractAddress}));
   };
 }
 

@@ -62,3 +62,18 @@ export const listContents = async () => {
   );
   return res.data;
 }
+
+export const getContractDetails = async () => {
+  try{
+    const res = await axios.get(
+      `${API_BASE_URL}/contract/${NFT_CONTRACT_ADDRESS}`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(res.data);
+    return { data: res.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};

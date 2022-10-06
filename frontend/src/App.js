@@ -10,6 +10,7 @@ import FilesView from "./components/FilesView";
 import Sidebar from "./components/Sidebar";
 import { useQuery } from "react-query";
 import { useCookies } from "react-cookie";
+import DonateModal from "./components/DonateModal";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -71,6 +72,7 @@ const App = () => {
           <Route path="/" element={<Showcase photos={photos}/>}/>
           <Route path="/resource/:slug" element={<SingleFileView />}/>
           <Route path="/admin/:slug" element={<Sidebar photos={photos}/>} />
+          <Route path="/donate/" element={<DonateModal onClose={()=>{}}/>} />
         </Routes>
       </BrowserRouter>
     </div>

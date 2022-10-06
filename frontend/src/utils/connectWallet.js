@@ -1,5 +1,10 @@
 import { ethers } from 'ethers';
 
+// Check for MetaMask wallet browser extension
+export const hasEthereum = () => {
+  return typeof window !== 'undefined' && typeof window.ethereum !== 'undefined'
+}
+
 export const connectWallet = async () => {
   // e.preventDefault();
   try {

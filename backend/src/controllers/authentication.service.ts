@@ -28,7 +28,7 @@ async function doesWalletOwnNft({walletPublicAddress, nftContractAddress}:{walle
   return false;
 }
 
-async function didWalletCreateNft({walletPublicAddress, nftContractAddress}:{walletPublicAddress: string, nftContractAddress: string}): Promise<boolean> {
+export async function getContractDetails({nftContractAddress}: {nftContractAddress: string}): Promise<any> {
   const resp = await axios({
     method: 'get',
     url: `https://testnet.coinex.net/api/v1/contracts/${nftContractAddress}`,
@@ -37,7 +37,12 @@ async function didWalletCreateNft({walletPublicAddress, nftContractAddress}:{wal
       'apikey': process.env.COINEX_API_KEY ?? ''
     },
   });
-  const creator = resp.data.data.creator_info.creator as string;
+  return resp.data;
+}
+
+async function didWalletCreateNft({walletPublicAddress, nftContractAddress}:{walletPublicAddress: string, nftContractAddress: string}): Promise<boolean> {
+  const respData = await getContractDetails({nftContractAddress});
+  const creator = respData.data.creator_info.creator as string;
   if (creator && creator?.length > 0) {
     // Check if the wallet has the correct NFT
     return creator === walletPublicAddress;

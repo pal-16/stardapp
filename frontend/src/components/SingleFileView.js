@@ -6,8 +6,17 @@ import {
   useLocation
 } from "react-router-dom";
 import { reconstructBlobUrl } from '../utils/manipulator';
+import { useState, useEffect } from "react";
+import DonateModal from './DonateModal';
 
 const SingleFileView = () => {
+  const [showDonateModal, setShowDonateModal] = useState(false);
+  const onDonateClick = async () => {
+    setShowDonateModal(true);
+  };
+  const onDonateClose = async () => {
+    setShowDonateModal(false);
+  };
   let { slug } = useParams();
   const location = useLocation()
   var { filename } = location.state;
@@ -23,9 +32,8 @@ const SingleFileView = () => {
         NFT
       </div>
       <div className="car_buttons">
-        <button>
-          Donate
-        </button>
+        <button onClick={onDonateClick} className="navLink navLink-hover mb-2"> Donate </button>
+        { showDonateModal && <DonateModal onClose={onDonateClose}/> }
       </div>
     </div>
   );
