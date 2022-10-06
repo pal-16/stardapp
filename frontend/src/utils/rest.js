@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_BASE_URL, PACKED_NONCE } from '../constants';
+import { API_BASE_URL, NFT_CONTRACT_ADDRESS } from '../constants';
 
 export const getAccessToken = async ({signature, walletPublicAddress}) => {
   try{
@@ -9,7 +9,7 @@ export const getAccessToken = async ({signature, walletPublicAddress}) => {
         nonce: 'message',
         signature,
         walletPublicAddress,
-        nftContractAddress: '0x8437ee943b49945a7270109277942defe30fac25',
+        nftContractAddress: NFT_CONTRACT_ADDRESS,
         nftId: '0',
       },
       {
@@ -55,6 +55,7 @@ export const getContent = async (filename) => {
 export const listContents = async () => {
   const res = await axios.post(
     `${API_BASE_URL}/list`,
+    {},
     {
       withCredentials: true
     }

@@ -1,4 +1,4 @@
-import AuthNft, { GetTokenResponseSuccess } from 'authnft';
+import AuthNft, { GetTokenResponseSuccess } from './authentication.service';
 import axios, { ResponseType } from 'axios';
 import FormData from 'form-data';
 import express from 'express';
@@ -6,7 +6,9 @@ import { UploadedFile } from 'express-fileupload';
 
 import Controller from '../interfaces/controller.interface';
 
-import authMiddleware from '../middleware/auth.middleware';
+import readAuthMiddleware from '../middleware/readAuth.middleware';
+import writeAuthMiddleware from '../middleware/writeAuth.middleware';
+
 import {
   checkFile,
   checkParams,
@@ -47,9 +49,9 @@ class AuthenticationController implements Controller {
     this.router.delete(`/token`, this.removeAccessToken);
     this.router.post('/encrypt', this.encryptFile);
     this.router.post('/decrypt', this.decryptFile);
-    this.router.post('/upload', this.uploadFile);
-    this.router.post('/download', authMiddleware, this.downloadFile);
-    this.router.post('/list', this.listFiles); 
+    this.router.post('/upload', writeAuthMiddleware, this.uploadFile);
+    this.router.post('/download', readAuthMiddleware, this.downloadFile);
+    this.router.post('/list', readAuthMiddleware, this.listFiles); 
   }
 
   private displayWelcomeMessage = async (

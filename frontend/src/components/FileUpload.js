@@ -32,7 +32,8 @@ const FileUpload = (props) => {
           console.log('Calling setPercentUploaded', percent)
           setPercentUploaded(percent)
         }
-      }
+      },
+      withCredentials: true,
     }
     
     // Send formData object

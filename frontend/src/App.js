@@ -5,7 +5,7 @@ import Showcase from "./components/showcase";
 import { getContent, listContents } from "./utils/rest";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Resource from "./components/resource";
+import SingleFileView from "./components/SingleFileView";
 import FilesView from "./components/FilesView";
 import Sidebar from "./components/Sidebar";
 import { useQuery } from "react-query";
@@ -69,7 +69,7 @@ const App = () => {
         />
         <Routes>
           <Route path="/" element={<Showcase photos={photos}/>}/>
-          <Route path="/resource/:slug" element={<Resource />}/>
+          <Route path="/resource/:slug" element={<SingleFileView />}/>
           <Route path="/admin/:slug" element={<Sidebar photos={photos}/>} />
         </Routes>
       </BrowserRouter>

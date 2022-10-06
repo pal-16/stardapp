@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { reconstructBlobUrl } from '../utils/manipulator';
 
-const Resource = () => {
+const SingleFileView = () => {
   let { slug } = useParams();
   const location = useLocation()
   var { filename } = location.state;
@@ -31,4 +31,4 @@ const Resource = () => {
   );
 }
 
-export default Resource;
+export default SingleFileView;
