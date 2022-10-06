@@ -1,6 +1,7 @@
 import { getAccessToken, removeAccessToken } from "../utils/rest";
 import { connectWallet, disconnectWallet } from "../utils/connectWallet";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Navbar = (props) => {
   const  {
@@ -12,9 +13,17 @@ const Navbar = (props) => {
     setPhotos,
   } = props;
 
+  useEffect(() => {
+    const address = localStorage.getItem('address');
+    if (address) {
+      setAccount(address);
+    }
+  }, []);
+
   const onConnectWallet = async () => {
     const { address, message, signature} = await connectWallet();
     console.log(address, message, signature);
+    localStorage.setItem('address', address);
     setAccount(address);
     const {accessToken, error} = await getAccessToken({signature, walletPublicAddress:address});
     if (error) {
@@ -28,6 +37,7 @@ const Navbar = (props) => {
 
   const ondisconnectWallet = async () => {
     await disconnectWallet();
+    localStorage.removeItem('address');
     setAccount("");
     const resp = await removeAccessToken();
     setAccessToken(null);

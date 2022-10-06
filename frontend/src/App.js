@@ -5,10 +5,11 @@ import Showcase from "./components/showcase";
 import { getContent, listContents } from "./utils/rest";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Admin from "./pages/admin";
 import Resource from "./components/resource";
 import FilesView from "./components/FilesView";
 import Sidebar from "./components/Sidebar";
+import { useQuery } from "react-query";
+import { useCookies } from "react-cookie";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -18,6 +19,17 @@ const App = () => {
   const [accessToken, setAccessToken] = useState("");
   const [rerender, setRerender] = useState(false);
   const [photos, setPhotos] = useState([]);
+
+  const [cookies, setCookie] = useCookies();
+
+  useEffect(() => {
+    console.log('loading', loading)
+    console.log('cookies', cookies);
+    if (!loading) {
+      setLoading(true);
+      onGetContent()
+    }
+  }, []);
 
   const onGetContent = async () => {
     try {
@@ -58,8 +70,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Showcase photos={photos}/>}/>
           <Route path="/resource/:slug" element={<Resource />}/>
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/fileitem" element={<FilesView photos={photos}/>} />
           <Route path="/admin/:slug" element={<Sidebar photos={photos}/>} />
         </Routes>
       </BrowserRouter>
