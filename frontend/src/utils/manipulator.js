@@ -15,3 +15,13 @@ export const reconstructBlobUrl =  (slug) => {
     return ""
   }
 }
+
+export const extractNameFromEncryptedFileName =  (filename) => {
+  try {
+    const name = filename.split(`encrypted_`)[1].split('.')[0].replaceAll('-', ' ');
+    console.log('name', name)
+    return name;
+  } catch (err) {
+    return ""
+  }
+}

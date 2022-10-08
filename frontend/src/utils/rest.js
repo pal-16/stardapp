@@ -17,9 +17,9 @@ export const getAccessToken = async ({signature, walletPublicAddress}) => {
       }
     );
     console.log(res.data);
-    return { accessToken: res.data.accessToken, error: null };
+    return { accessToken: res.data.accessToken, accessLevel: res.data.accessLevel, error: null };
   } catch (error) {
-    return { accessToken: null, error };
+    return { accessToken: null, accessToken: null, error };
   }
 };
 

@@ -115,22 +115,6 @@ export default function AuthNft() {
             code: 400,
           };
         }
-        // Check if the wallet owns the NFT and give read-only access.
-        if (await doesWalletOwnNft({walletPublicAddress, nftContractAddress})) {
-          const accessLevel = 'read';
-          return {
-            data: {
-              accessToken: createToken(_secret, getTokenRequest, accessLevel),
-              walletPublicAddress,
-              nftContractAddress,
-              accessLevel,
-              nftId,
-              iat: Date.now(),
-              exp: Date.now() + 1000 * 60 * 60 * 24 * 30,
-            },
-            code: 200,
-          };
-        }
         // Check if the wallet created the NFT and give write access.
         if (await didWalletCreateNft({walletPublicAddress, nftContractAddress})) {
           const accessLevel = 'write';
@@ -147,6 +131,23 @@ export default function AuthNft() {
             code: 200,
           };
         }
+        // Check if the wallet owns the NFT and give read-only access.
+        if (await doesWalletOwnNft({walletPublicAddress, nftContractAddress})) {
+          const accessLevel = 'read';
+          return {
+            data: {
+              accessToken: createToken(_secret, getTokenRequest, accessLevel),
+              walletPublicAddress,
+              nftContractAddress,
+              accessLevel,
+              nftId,
+              iat: Date.now(),
+              exp: Date.now() + 1000 * 60 * 60 * 24 * 30,
+            },
+            code: 200,
+          };
+        }
+        
         return {
           data: {
             errorMessage: 'Invalid NFT',

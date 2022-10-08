@@ -31,15 +31,15 @@ html {
 }
 
 .showcase {
-  @apply mt-[8rem]
+  @apply mt-[8rem] mx-[20%]
 }
 
 .car_container {
-  @apply p-52 w-full h-screen
+  @apply pb-[19rem] pt-[9rem] px-[2rem] w-full h-screen
 }
 
 .car_section {
-  @apply w-full h-full
+  @apply w-full h-full pb-[1rem]
 }
 
 .car_image {
@@ -51,5 +51,5 @@ html {
 }
 
 .resource_title {
-  @apply text-6xl font-semibold text-[#181b21] text-center
+  @apply text-6xl font-semibold text-[#181b21] py-[1rem]
 }

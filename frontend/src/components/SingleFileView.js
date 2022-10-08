@@ -5,7 +5,7 @@ import {
   useParams,
   useLocation
 } from "react-router-dom";
-import { reconstructBlobUrl } from '../utils/manipulator';
+import { extractNameFromEncryptedFileName, reconstructBlobUrl } from '../utils/manipulator';
 import { useState, useEffect } from "react";
 import DonateModal from './DonateModal';
 
@@ -25,13 +25,20 @@ const SingleFileView = () => {
       <section className="car_section">
         <img alt="" src={reconstructBlobUrl(slug)} className='car_image'/>
       </section>
+      <div className='py-[1rem]'>
+        <hr/>
+      </div>
       <div className='resource_title'>
-        {filename.split('encrypted_')[1]}
+        {extractNameFromEncryptedFileName(filename)}
       </div>
-      <div className='resource_nft'>
-        NFT
+      {/* <div className='w-[3rem] h-[3rem] rounded-full py-[1rem]'>
+        <img src="/taylor.jpg" alt="taylor"/>
+      </div> */}
+      <div className="flex flex-row py-[1rem]">
+        <img src="/taylor.jpg" alt="..." className=" w-[3rem] shadow rounded-full align-middle border-none" />
+        <span className='px-[1rem] pt-[1rem] text-xl font-semibold'>Taylor S.</span>
       </div>
-      <div className="car_buttons">
+      <div className="py-[1rem]">
         <button onClick={onDonateClick} className="navLink navLink-hover mb-2"> Donate </button>
         { showDonateModal && <DonateModal onClose={onDonateClose}/> }
       </div>

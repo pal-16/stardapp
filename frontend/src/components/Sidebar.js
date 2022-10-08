@@ -19,9 +19,9 @@ const Sidebar = (props) => {
   };
   
   return (
-    <div className="flex w-full fixed h-screen mt-[8rem] text-2xl">
+    <div className="flex w-full h-screen mt-[8rem] text-2xl">
       <aside className="flex w-72 flex-col space-y-2 border-r-2 border-gray-200 bg-white p-2"
-        x-show="asideOpen">
+        >
         <Link to="/admin/files" className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600">
           <span><i className="bx bx-file"></i></span>
           <span>Files</span>
@@ -37,10 +37,12 @@ const Sidebar = (props) => {
       <div className="w-full p-2">
       {
         slug === 'files' && (
-          <div>
-            <button onClick={onAddFilesClick} className="navLink navLink-hover mb-2"> Add Files </button>
+          <div className="">
+            <button onClick={onAddFilesClick} className="navLink navLink-hover"> Add Files </button>
             { showFileUploadModal && <FileUpload onClose={onAddFilesClose}/> }
-            <FilesView photos={props.photos}/>
+            <div>
+              <FilesView photos={props.photos}/>
+            </div>
           </div>
           
         )

@@ -15,7 +15,10 @@ import Minter2 from './artifacts/contracts/Minter2.sol/Minter2.json'
 import { ethers } from 'ethers'
 import { hasEthereum } from "./utils/connectWallet";
 import { NEXT_PUBLIC_MINTER_ADDRESS, MINT_PRICE } from "./constants";
-
+import Welcome from "./components/Welcome";
+import { connectWallet, disconnectWallet } from "./utils/connectWallet";
+import { getAccessToken, removeAccessToken } from "./utils/rest";
+import TokensView from "./components/TokensView";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -25,6 +28,7 @@ const App = () => {
   const [accessToken, setAccessToken] = useState("");
   const [rerender, setRerender] = useState(false);
   const [photos, setPhotos] = useState([]);
+  const [openManageTokensScreen, setOpenManageTokensScreen] = useState(false);
 
   const [cookies, setCookie] = useCookies();
 
@@ -37,6 +41,33 @@ const App = () => {
     }
   }, []);
 
+  const onConnectWallet = async () => {
+    const { address, message, signature} = await connectWallet();
+    console.log(address, message, signature);
+    localStorage.setItem('address', address);
+    setAccount(address);
+    const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address});
+    if (error) {
+      setError(error);
+    }
+    if (accessToken) {
+      localStorage.setItem('accessLevel', accessLevel);
+      setAccessToken(accessToken);
+      await onGetContent()
+    }
+  };
+
+  const ondisconnectWallet = async () => {
+    await disconnectWallet();
+    localStorage.removeItem('address');
+    localStorage.removeItem('accessLevel');
+    setAccount("");
+    const resp = await removeAccessToken();
+    setAccessToken(null);
+    setPhotos([]);
+    console.log(resp);
+  };
+
   const onGetContent = async () => {
     try {
       setLoading(true);
@@ -48,7 +79,7 @@ const App = () => {
         }
       });
     } catch (err) {
-      alert(err.message);
+      console.error(err.message);
     }
     setLoading(false);
   };
@@ -88,17 +119,22 @@ const App = () => {
 
         // setMintMessage(`Congrats, you minted ${mintQuantity} token(s)!`)
         // setMintError(false)
-      } catch {
+      } catch(error) {
         // setMintMessage('Connect your wallet first.');
         // setMintError(true)
+        console.error(error);
       }
     } catch(error) {
         // setMintMessage(error.message)
         // setMintError(true)
+      console.error(error);
     }
     // setMintLoading(false)
   }
+
   
+  const donate = async () =>  {}
+
   return (
     <div>
       <BrowserRouter>
@@ -111,12 +147,24 @@ const App = () => {
           setAccessToken={setAccessToken}
           onGetContent={onGetContent}
           setPhotos={setPhotos}
+          onConnectWallet={onConnectWallet}
+          ondisconnectWallet={ondisconnectWallet}
+          setOpenManageTokensScreen={setOpenManageTokensScreen}
         />
-        <button onClick={mint} className="mt-[8rem]"> Mint </button>
+        {/* <button onClick={mint} className="mt-[8rem]"> Mint </button> */}
         <Routes>
-          <Route path="/" element={<Showcase photos={photos}/>}/>
+          <Route path="/" element={
+            photos && photos.length > 0
+              ? <Showcase photos={photos}/>
+              : !account || ['', 'undefined'].includes(account)
+                ? <Welcome show={"connect-wallet"} onCtaClick ={onConnectWallet}/>
+                : !accessToken || ['', 'undefined'].includes(accessToken)
+                  ? <Welcome show={"mint"} onCtaClick={mint}/>
+                  : <Welcome show={"empty"} onCtaClick={donate}/>
+          }/>
           <Route path="/resource/:slug" element={<SingleFileView />}/>
           <Route path="/admin/:slug" element={<Sidebar photos={photos}/>} />
+          <Route path="/manage" element={<TokensView />} />
         </Routes>
       </BrowserRouter>
     </div>
