@@ -38,10 +38,12 @@ const SingleFileView = () => {
         <img src="/taylor.jpg" alt="..." className=" w-[3rem] shadow rounded-full align-middle border-none" />
         <span className='px-[1rem] pt-[1rem] text-xl font-semibold'>Taylor S.</span>
       </div>
-      <div className="py-[1rem]">
-        <button onClick={onDonateClick} className="navLink navLink-hover mb-2"> Donate </button>
-        { showDonateModal && <DonateModal onClose={onDonateClose}/> }
-      </div>
+      {localStorage.getItem('accessLevel') !== 'write' ? (
+        <div className="py-[1rem]">
+          <button onClick={onDonateClick} className="navLink navLink-hover mb-2"> Donate </button>
+          { showDonateModal && <DonateModal onClose={onDonateClose}/> }
+        </div>
+      ):<></>}
     </div>
   );
 }
