@@ -1,3 +1,4 @@
+import { extractNameFromEncryptedFileName } from "../utils/manipulator";
 import { DeleteIcon } from "./deleteIcon";
 import { EditIcon } from "./editIcon";
 import { ViewIcon } from "./viewIcon";
@@ -93,7 +94,7 @@ const FilesView = (props) => {
                   <tr className="border-b border-gray-200 hover:bg-gray-100" key={i}>
                     <td className="py-3 px-6 text-left whitespace-nowrap">
                       <div className="flex items-center">
-                        <span className="font-medium">{image.filename}</span>
+                        <span className="font-medium">{extractNameFromEncryptedFileName(image.filename)}</span>
                       </div>
                     </td>
                     <td className="p-0 text-center">
