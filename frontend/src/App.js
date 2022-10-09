@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 import DonateModal from "./components/DonateModal";
 import Minter2 from './artifacts/contracts/Minter2.sol/Minter2.json'
 import { ethers } from 'ethers'
-import { hasEthereum } from "./utils/connectWallet";
+import { getContractBalance, hasEthereum } from "./utils/connectWallet";
 import { NEXT_PUBLIC_MINTER_ADDRESS, MINT_PRICE } from "./constants";
 import Welcome from "./components/Welcome";
 import { connectWallet, disconnectWallet } from "./utils/connectWallet";
@@ -35,6 +35,7 @@ const App = () => {
   useEffect(() => {
     console.log('loading', loading)
     console.log('cookies', cookies);
+    (getContractBalance("0x2F63f06BBaE33967b30e9a60077EF61f7F3c3164")).then(res => console.log(res));
     if (!loading) {
       setLoading(true);
       onGetContent()

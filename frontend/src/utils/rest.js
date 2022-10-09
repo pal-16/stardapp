@@ -109,3 +109,22 @@ export const generateTokenUri = async () => {
     return { data: null, error };
   }
 };
+
+
+export const uploadTxn = async ({senderAddress, amount}) => {
+  try {
+    const res = await axios.post(
+      `${API_BASE_URL}/upload-txn`,
+      {
+        senderAddress,
+        amount
+      },
+      {
+        withCredentials: true
+      }
+    );
+    return { data: res.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}

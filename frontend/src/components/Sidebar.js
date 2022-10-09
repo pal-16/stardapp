@@ -6,6 +6,7 @@ import {
 import { useState, useEffect } from "react";
 
 import FileUpload from "./FileUpload";
+import MonetizationView from "./MonetizationView";
 
 const Sidebar = (props) => {
   const [showFileUploadModal, setShowFileUploadModal] = useState(false);
@@ -49,7 +50,11 @@ const Sidebar = (props) => {
       }
       {
         slug === 'monetization' && (
-          <div className="mt-[8rem]"> Heyo </div>
+          <div className="">
+            <div>
+              <MonetizationView photos={props.photos}/>
+            </div>
+          </div>
         )
       }
       </div>

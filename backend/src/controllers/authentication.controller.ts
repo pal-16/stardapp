@@ -39,6 +39,7 @@ class AuthenticationController implements Controller {
   public CHAINSAFE_BUCKET_URL = process.env.CHAINSAFE_BUCKET_URL ?? '';
   public CHAINSAFE_NFT_ART_BUCKET_URL = process.env.CHAINSAFE_NFT_ART_BUCKET_URL ?? '';
   public CHAINSAFE_NFT_TOKEN_URI_BUCKET_URL = process.env.CHAINSAFE_NFT_TOKEN_URI_BUCKET_URL ?? '';
+  public CHAINSAFE_TXN_BUCKET_URL = process.env.CHAINSAFE_TXN_BUCKET_URL ?? '';
   public CHAINSAFE_KEY_SECRET = process.env.CHAINSAFE_KEY_SECRET ?? '';
   public ENCRYPTION_KEY = process.env.ENCRYPTION_KEY ?? '';
   public ENCRYPTION_SALT = process.env.ENCRYPTION_SALT ?? '';
@@ -62,6 +63,7 @@ class AuthenticationController implements Controller {
     this.router.post('/encrypt', this.encryptFile);
     this.router.post('/decrypt', this.decryptFile);
     this.router.post('/upload', writeAuthMiddleware, this.uploadFile);
+    this.router.post('/upload-txn', readAuthMiddleware /** Not safe, just a hack */, this.uploadTxn);
     this.router.post('/download', readAuthMiddleware, this.downloadFile);
     this.router.post('/delete', writeAuthMiddleware, this.deleteFile);
     this.router.post('/list', readAuthMiddleware, this.listFiles); 
@@ -191,6 +193,32 @@ class AuthenticationController implements Controller {
       return res.sendStatus(400);
     }
   };
+
+  private uploadTxn = async (
+    req : express.Request,
+    res: express.Response
+  ) => {
+    try {
+      const { senderAddress, amount } = req.body;
+      let formdata = new FormData();
+      formdata.append('path', ``);
+      formdata.append('file', '', `${senderAddress}-${amount}`);
+      const resp = await axios({
+        method: 'post',
+        url: `${this.CHAINSAFE_TXN_BUCKET_URL}/upload`,
+        responseType: 'stream' as ResponseType,
+        headers: { 
+          'Authorization': `Bearer ${this.CHAINSAFE_KEY_SECRET}`,
+          'Content-Type': 'application/json'
+        },
+        data : formdata
+      });
+  
+      resp.data.pipe(res)
+    } catch (error) {
+      return res.sendStatus(400);
+    }
+  }
   
   private downloadFile = async (
     req : express.Request,

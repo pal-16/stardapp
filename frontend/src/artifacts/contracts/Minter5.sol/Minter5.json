@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "Minter5",
-  "sourceName": "contracts/Minter5.sol",
+  "contractName": "Minter7",
+  "sourceName": "contracts/Minter7.sol",
   "abi": [
     {
       "inputs": [],

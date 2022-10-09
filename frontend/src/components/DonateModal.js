@@ -4,8 +4,8 @@ import React,{Component} from 'react';
 import { API_BASE_URL, PACKED_NONCE } from '../constants';
 import { useState, useEffect } from "react";
 import { CoinexIcon } from './coinexIcon';
-import { hasEthereum } from '../utils/connectWallet';
-import { getContractDetails } from '../utils/rest';
+import { hasEthereum, sendCet } from '../utils/connectWallet';
+import { getContractDetails, uploadTxn } from '../utils/rest';
 
 const DonateModal = (props) => {
   const [amountInCet, setAmountInCet] = useState(0);
@@ -22,29 +22,32 @@ const DonateModal = (props) => {
     console.log('value is:', event.target.value);
   };
 
-  const sendCet = async () => {
-    if(!hasEthereum()) return
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner()
-      try {
-        const contractDetail = await getContractDetails();
-        const creatorAddress = contractDetail?.data?.data?.creator_info?.creator;
-        if (!creatorAddress || creatorAddress.length === 0) return
-        console.log('creator', creatorAddress)
-        const tx = await signer.sendTransaction({
-          to: creatorAddress,
-          value: ethers.utils.parseEther(`${amountInCet}`)
-        });
-        console.log({ amountInCet });
-        console.log("tx", tx);
-      } catch(error) {
-        console.log(error)
-      }
-    } catch(error) {
-      console.log(error)
-    }
-  }
+  // const sendCet = async () => {
+  //   if(!hasEthereum()) return
+  //   try {
+  //     const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //     const signer = provider.getSigner()
+  //     try {
+  //       const senderAddress = await signer.getAddress();
+  //       const contractDetail = await getContractDetails();
+  //       const creatorAddress = contractDetail?.data?.data?.creator_info?.creator;
+  //       if (!creatorAddress || creatorAddress.length === 0) return
+  //       console.log('creator', creatorAddress)
+  //       const tx = await signer.sendTransaction({
+  //         to: creatorAddress,
+  //         value: ethers.utils.parseEther(`${amountInCet}`)
+  //       });
+  //       console.log({ amountInCet });
+  //       console.log("tx", tx);
+  //       await uploadTxn({senderAddress, amount: amountInCet});
+
+  //     } catch(error) {
+  //       console.log(error)
+  //     }
+  //   } catch(error) {
+  //     console.log(error)
+  //   }
+  // }
 
   return (
     <div 
@@ -72,7 +75,7 @@ const DonateModal = (props) => {
             <div>
             <button
               className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none disabled:opacity-75 disabled:cursor-not-allowed"
-              onClick={sendCet}
+              onClick={() => {sendCet({amountInCet})}}
             >
               Send CET
             </button>

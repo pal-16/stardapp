@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { NEXT_PUBLIC_MINTER_ADDRESS } from '../constants';
-import Minter5 from '../artifacts/contracts/Minter5.sol/Minter5.json'
+import Minter7 from '../artifacts/contracts/Minter7.sol/Minter7.json'
 import axios from 'axios';
 
 // Check for MetaMask wallet browser extension
@@ -44,7 +44,7 @@ export const getNftsForAccount = async (account) => {
 
     try {
       console.log('account', account);
-      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter5.abi, signer)
+      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
       console.log(contract);
       const balance = await contract.balanceOf(account);
       for(let i = 0; i < balance.toNumber(); i++) {
@@ -73,7 +73,7 @@ export const sendNft = async (account, nftId) => {
 
     try {
       console.log('account', account);
-      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter5.abi, signer)
+      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
       console.log(contract);
       const transaction = await contract["safeTransferFrom(address,address,uint256)"](localStorage.getItem("address") /* from */, account /* to */, nftId);
       await transaction.wait()
@@ -82,5 +82,69 @@ export const sendNft = async (account, nftId) => {
     }
   } catch(error) {
     console.error(error);
+  }
+}
+
+export const getMonetizationInfo = async () => {
+  const res = {mintRevenues:[], donationRevenues: []};
+  if(!hasEthereum()) return res;
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+
+    try {
+      const address = await signer.getAddress()
+      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+      const owners = new Set();
+      const totalSupply = await contract.totalSupply();
+      for (let i=0; i<totalSupply; i++) {
+        owners.add(await contract.ownerOf(i))
+      }
+      console.log('owners', owners);
+      for (const owner of owners) {
+        console.log('owner money mint', ethers.utils.formatEther(await contract.addressToAmountMint(owner)));
+        console.log('owner money donate', ethers.utils.formatEther(await contract.addressToAmountDonate(owner)));
+        res.mintRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountMint(owner))});
+        res.donationRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountDonate(owner))});
+      }
+    } catch(error) {
+      console.error(error);
+    }
+  } catch(error) {
+    console.error(error);
+  }
+  return res;
+}
+
+export const getContractBalance = async (nftContractAddress) => {
+  if (!hasEthereum) return {data: null, error: 'No wallet found!'};
+  try {
+    const provider = ethers.getDefaultProvider();
+    const balance = await provider.getBalance(nftContractAddress);
+    return {data: balance.toNumber(), error: null};
+  } catch(error) {
+    console.log(error);
+    return {data: null, error};
+  }
+}
+
+export const sendCet = async ({amountInCet}) => {
+  if(!hasEthereum()) return
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+
+    try {
+      const address = await signer.getAddress()
+      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+      const transaction = await contract.donate( { value: ethers.utils.parseEther(amountInCet) })
+
+      await transaction.wait()
+        
+    } catch(error) {
+      console.log(error)
+    }
+  } catch(error) {
+    console.log(error)
   }
 }
