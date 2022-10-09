@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getNftsForAccount } from "../utils/connectWallet";
+import { COINEX_TESTNET_EXPLORER } from "../constants";
 
 
 const TokensView = (props) => {
@@ -48,12 +49,6 @@ const TokensView = (props) => {
                         <span className="font-medium">{nft.title}</span>
                       </div>
                     </td>
-                    {/* <td className="flex flex-row item-center justify-center py-3 px-6 text-left whitespace-nowrap">
-                      <img src="/taylor.jpg" alt="..." className=" w-[3rem] shadow rounded-full align-middle border-none" />
-                      <div className="flex items-center px-[1rem]">
-                        <span className="font-medium">Taylor S.</span>
-                      </div>
-                    </td> */}
                     <td className="p-0 text-center">
                       <div className="flex item-center justify-center">
                       <img src="/taylor.jpg" alt="..." className=" w-[3rem] shadow rounded-full align-middle border-none" />
@@ -64,9 +59,11 @@ const TokensView = (props) => {
                     </td>
                     <td className="p-0 text-center">
                       <div className="flex item-center justify-center">
-                        <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110" data-bs-toggle="tooltip" title="View this NFT">
-                          <ViewIcon />
-                        </div>
+                        <a href={`${COINEX_TESTNET_EXPLORER}/token/${nft.nftContractAddress}?a=${nft.nftId}`} target="_blank">
+                          <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110" data-bs-toggle="tooltip" title="View this NFT">
+                            <ViewIcon />
+                          </div>
+                        </a>
                         <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110" data-bs-toggle="tooltip" title="Gift this NFT">
                           <SendIcon />
                         </div>

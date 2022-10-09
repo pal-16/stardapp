@@ -118,9 +118,9 @@ const FilesView = (props) => {
                             <ViewIcon />
                           </Link>
                         </div>
-                        <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110">
+                        {/* <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110">
                           <EditIcon />
-                        </div>
+                        </div> */}
                         <div onClick={() => {onAddFilesClick(image.filename)}} className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110">
                           <DeleteIcon />
                         </div>

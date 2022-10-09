@@ -53,7 +53,8 @@ export const getNftsForAccount = async (account) => {
         const tokenUri = await contract.tokenURI(tokenId);
         const content = (await axios.get(tokenUri)).data;
         console.log(content);
-        nfts.push(content);
+        console.log('contract.address', contract.address);
+        nfts.push({...content, nftId: tokenId, nftContractAddress: contract.address });
       }
     } catch(error) {
       console.error(error);
