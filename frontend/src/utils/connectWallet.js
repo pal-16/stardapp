@@ -64,3 +64,23 @@ export const getNftsForAccount = async (account) => {
   }
   return nfts;
 }
+
+export const sendNft = async (account, nftId) => {
+  if(!hasEthereum()) return;
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+
+    try {
+      console.log('account', account);
+      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter5.abi, signer)
+      console.log(contract);
+      const transaction = await contract["safeTransferFrom(address,address,uint256)"](localStorage.getItem("address") /* from */, account /* to */, nftId);
+      await transaction.wait()
+    } catch(error) {
+      console.error(error);
+    }
+  } catch(error) {
+    console.error(error);
+  }
+}

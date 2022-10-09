@@ -5,7 +5,7 @@ import {
   useLocation
 } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getNftsForAccount } from "../utils/connectWallet";
+import { getNftsForAccount, sendNft } from "../utils/connectWallet";
 import { COINEX_TESTNET_EXPLORER } from "../constants";
 
 
@@ -64,7 +64,7 @@ const TokensView = (props) => {
                             <ViewIcon />
                           </div>
                         </a>
-                        <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110" data-bs-toggle="tooltip" title="Gift this NFT">
+                        <div onClick={() => {sendNft("0x5d905Cd5734A457139bc04c77CAAf3DFCBf0bA33", nft.nftId)}} className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110" data-bs-toggle="tooltip" title="Gift this NFT">
                           <SendIcon />
                         </div>
                       </div>
