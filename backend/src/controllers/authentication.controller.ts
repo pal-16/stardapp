@@ -63,6 +63,7 @@ class AuthenticationController implements Controller {
     this.router.post('/decrypt', this.decryptFile);
     this.router.post('/upload', writeAuthMiddleware, this.uploadFile);
     this.router.post('/download', readAuthMiddleware, this.downloadFile);
+    this.router.post('/delete', writeAuthMiddleware, this.deleteFile);
     this.router.post('/list', readAuthMiddleware, this.listFiles); 
     this.router.get('/contract/:nftContractAddress', this.getContractDetails); 
     this.router.get('/token-uri/', this.generateTokenUri); 
@@ -231,6 +232,32 @@ class AuthenticationController implements Controller {
       return res.sendStatus(400);
     }
   };
+  
+  private deleteFile = async (
+    req : express.Request,
+    res: express.Response
+  ) => {
+    try {
+      const { filename } = req.body;
+      const resp = await axios({
+        method: 'post',
+        url: `${this.CHAINSAFE_BUCKET_URL}/rm`,
+        headers: {
+          'Authorization': `Bearer ${process.env.CHAINSAFE_KEY_SECRET}`,
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+          "paths": [
+            filename
+          ]
+        })
+      });
+      return res.send(resp.data);
+    } catch (error) {
+      return res.sendStatus(400);
+    }
+  };
+
   
   private listFiles = async (
     req : express.Request,

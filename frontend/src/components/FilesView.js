@@ -3,8 +3,21 @@ import { DeleteIcon } from "./deleteIcon";
 import { EditIcon } from "./editIcon";
 import { ViewIcon } from "./viewIcon";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import ConfirmDelete from "./ConfirmDelete";
 
 const FilesView = (props) => {
+  const [showFileUploadModal, setShowFileUploadModal] = useState (false);
+  const [fileToBeDeleted, setFileToBeDeleted] = useState (undefined);
+  
+  const onAddFilesClick = async (filename) => {
+    setShowFileUploadModal(true);
+    setFileToBeDeleted(filename);
+  };
+  const onAddFilesClose = async () => {
+    setShowFileUploadModal(false);
+    setFileToBeDeleted(undefined)
+  };
   // const tmp = [
   //   {filename: "encrypted_Awesome.webp", uri: "blob:htt…"},
   //   {filename: "encrypted_Awesomeness.webp", uri: "blob…"},
@@ -108,13 +121,14 @@ const FilesView = (props) => {
                         <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110">
                           <EditIcon />
                         </div>
-                        <div className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110">
+                        <div onClick={() => {onAddFilesClick(image.filename)}} className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110">
                           <DeleteIcon />
                         </div>
                       </div>
                     </td>
                   </tr>
                 ))}
+                { showFileUploadModal && <ConfirmDelete fileToBeDeleted={fileToBeDeleted} onClose={onAddFilesClose}/> }
               </tbody>
             </table>
           </div>

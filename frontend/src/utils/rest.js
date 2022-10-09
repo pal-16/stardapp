@@ -52,6 +52,23 @@ export const getContent = async (filename) => {
   }
 }
 
+export const deleteContent = async (filename) => {
+  try {
+    const res = await axios.post(
+      `${API_BASE_URL}/delete`,
+      {
+        "filename": filename
+      },
+      {
+        withCredentials: true
+      }
+    );
+    return { data: res.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
+
 export const listContents = async () => {
   const res = await axios.post(
     `${API_BASE_URL}/list`,
