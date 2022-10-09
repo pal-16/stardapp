@@ -7,11 +7,14 @@ import {
 import { useEffect, useState } from "react";
 import { getNftsForAccount, sendNft } from "../utils/connectWallet";
 import { COINEX_TESTNET_EXPLORER } from "../constants";
+import SendNft from "./SendNft";
 
 
 const TokensView = (props) => {
-
+  const [showDonateModal, setShowDonateModal] = useState(false);
   const [nfts, setNfts] = useState([]);
+  const [nftToBeGifted, setNftToBeGifted] = useState({});
+  
   useEffect(() => {
     const address = localStorage.getItem('address');
     if (address && !['', 'undefined'].includes(address)) {
@@ -21,6 +24,16 @@ const TokensView = (props) => {
       });
     }
   }, []);
+
+  const onDonateClick = async (nft) => {
+    setShowDonateModal(true);
+    setNftToBeGifted(nft);
+  };
+  const onDonateClose = async () => {
+    setShowDonateModal(false);
+    setNftToBeGifted({});
+  };
+
 
   return (
     <div className="overflow-x-auto mt-[8rem]">
@@ -64,13 +77,14 @@ const TokensView = (props) => {
                             <ViewIcon />
                           </div>
                         </a>
-                        <div onClick={() => {sendNft("0x5d905Cd5734A457139bc04c77CAAf3DFCBf0bA33", nft.nftId)}} className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110" data-bs-toggle="tooltip" title="Gift this NFT">
+                        <div onClick={() => {onDonateClick(nft)}} className="w-8 mr-2 transform hover:text-purple-500 hover:scale-110" data-bs-toggle="tooltip" title="Gift this NFT">
                           <SendIcon />
                         </div>
                       </div>
                     </td>
                   </tr>
                 ))}
+                { showDonateModal && <SendNft onClose={onDonateClose} nftId={nftToBeGifted.nftId} nftImage={nftToBeGifted.image} nftTitle={nftToBeGifted.title}/> }
               </tbody>
             </table>
           </div>
