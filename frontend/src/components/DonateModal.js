@@ -1,7 +1,5 @@
-import axios from 'axios';
-import { ethers } from 'ethers'
+
 import React,{Component} from 'react';
-import { API_BASE_URL, PACKED_NONCE } from '../constants';
 import { useState, useEffect } from "react";
 import { CoinexIcon } from './coinexIcon';
 import { hasEthereum, sendCet } from '../utils/connectWallet';
@@ -19,35 +17,7 @@ const DonateModal = (props) => {
 
   const handleAmountInCetChange = event => {
     setAmountInCet(event.target.value);
-    console.log('value is:', event.target.value);
   };
-
-  // const sendCet = async () => {
-  //   if(!hasEthereum()) return
-  //   try {
-  //     const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //     const signer = provider.getSigner()
-  //     try {
-  //       const senderAddress = await signer.getAddress();
-  //       const contractDetail = await getContractDetails();
-  //       const creatorAddress = contractDetail?.data?.data?.creator_info?.creator;
-  //       if (!creatorAddress || creatorAddress.length === 0) return
-  //       console.log('creator', creatorAddress)
-  //       const tx = await signer.sendTransaction({
-  //         to: creatorAddress,
-  //         value: ethers.utils.parseEther(`${amountInCet}`)
-  //       });
-  //       console.log({ amountInCet });
-  //       console.log("tx", tx);
-  //       await uploadTxn({senderAddress, amount: amountInCet});
-
-  //     } catch(error) {
-  //       console.log(error)
-  //     }
-  //   } catch(error) {
-  //     console.log(error)
-  //   }
-  // }
 
   return (
     <div 

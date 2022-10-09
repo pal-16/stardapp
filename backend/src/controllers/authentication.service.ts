@@ -169,7 +169,6 @@ export default function AuthNft() {
     verifyToken: function (token: string): boolean {
       try {
         const {accessLevel} = jwt.verify(token, _secret) as JwtAccessTokenPayload;
-        console.log('accessLevel', accessLevel);
         return true;
       } catch (err) {
         return false;

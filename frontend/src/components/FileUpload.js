@@ -26,10 +26,8 @@ const FileUpload = (props) => {
       onUploadProgress: (progressEvent) => {
         const {loaded, total} = progressEvent;
         let percent = Math.floor( (loaded * 100) / total )
-        console.log( `${loaded}kb of ${total}kb | ${percent}%` );
 
         if( percent < 100 ){
-          console.log('Calling setPercentUploaded', percent)
           setPercentUploaded(percent)
         }
       },
@@ -38,7 +36,6 @@ const FileUpload = (props) => {
     
     // Send formData object
     axios.post(`${API_BASE_URL}/upload`, formData, options).then(res => { 
-      console.log(res);
       setPercentUploaded(100);
     })
 	};

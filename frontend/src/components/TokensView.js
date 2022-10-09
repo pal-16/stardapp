@@ -19,7 +19,6 @@ const TokensView = (props) => {
     const address = localStorage.getItem('address');
     if (address && !['', 'undefined'].includes(address)) {
       (getNftsForAccount(address)).then(resp => {
-        console.log('resp', resp);
         setNfts(resp);
       });
     }

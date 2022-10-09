@@ -18,7 +18,6 @@ const Navbar = (props) => {
 
   useEffect(() => {
     const address = localStorage.getItem('address');
-    console.log('address', address);
     if (address && address !== 'undefined') {
       setAccount(address);
     }

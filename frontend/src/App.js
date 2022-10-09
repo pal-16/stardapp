@@ -33,9 +33,6 @@ const App = () => {
   const [cookies, setCookie] = useCookies();
 
   useEffect(() => {
-    console.log('loading', loading)
-    console.log('cookies', cookies);
-    (getContractBalance("0x2F63f06BBaE33967b30e9a60077EF61f7F3c3164")).then(res => console.log(res));
     if (!loading) {
       setLoading(true);
       onGetContent()
@@ -44,7 +41,6 @@ const App = () => {
 
   const onConnectWallet = async () => {
     const { address, message, signature} = await connectWallet();
-    console.log(address, message, signature);
     localStorage.setItem('address', address);
     setAccount(address);
     const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address});
@@ -66,7 +62,6 @@ const App = () => {
     const resp = await removeAccessToken();
     setAccessToken(null);
     setPhotos([]);
-    console.log(resp);
   };
 
   const onGetContent = async () => {

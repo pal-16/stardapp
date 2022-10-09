@@ -13,7 +13,6 @@ const ConfirmDelete = (props) => {
 
 
   const onConfirmDelete = async () => {
-    console.log('deleting!!!!')
     const {data, error} = await deleteContent(fileToBeDeleted);
     if (!error) {
       setDeleted(true);

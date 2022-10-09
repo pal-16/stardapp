@@ -12,9 +12,7 @@ const MonetizationView = (props) => {
   const [monetization, setMonetization] = useState({});
   
   useEffect(() => {
-    console.log('in monetization useeffect');
     (getMonetizationInfo()).then(resp => {
-      console.log('resp', resp);
       setMonetization(resp);
     });
   }, []);

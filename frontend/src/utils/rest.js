@@ -16,7 +16,6 @@ export const getAccessToken = async ({signature, walletPublicAddress}) => {
         withCredentials: true,
       }
     );
-    console.log(res.data);
     return { accessToken: res.data.accessToken, accessLevel: res.data.accessLevel, error: null };
   } catch (error) {
     return { accessToken: null, accessToken: null, error };
@@ -29,7 +28,6 @@ export const removeAccessToken = async () => {
       withCredentials: true,
     }
   );
-  console.log(res.data);
   return res.data;
 }
 
@@ -38,7 +36,6 @@ export const getContent = async (filename) => {
     const res = await axios.post(
       `${API_BASE_URL}/download`,
       {
-        // "filename": "rick-roll-rick-ashley.gif"
         "filename": filename
       },
       {
@@ -88,7 +85,6 @@ export const getContractDetails = async () => {
         withCredentials: true,
       }
     );
-    console.log(res.data);
     return { data: res.data, error: null };
   } catch (error) {
     return { data: null, error };
@@ -103,7 +99,6 @@ export const generateTokenUri = async () => {
         withCredentials: true,
       }
     );
-    console.log(res.data);
     return { data: res.data, error: null };
   } catch (error) {
     return { data: null, error };

@@ -19,7 +19,6 @@ const SendNft = (props) => {
 
   const handleAddressChange = event => {
     setAddress(event.target.value);
-    console.log('value is:', event.target.value);
   };
 
   return (

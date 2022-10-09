@@ -12,7 +12,6 @@ export const connectWallet = async () => {
   // e.preventDefault();
   try {
     const message = "message";
-    console.log({ message });
     if (!window.ethereum)
       throw new Error('No crypto wallet found. Please install it.');
     await window.ethereum.send('eth_requestAccounts');
@@ -43,17 +42,12 @@ export const getNftsForAccount = async (account) => {
     const signer = provider.getSigner()
 
     try {
-      console.log('account', account);
       const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-      console.log(contract);
       const balance = await contract.balanceOf(account);
       for(let i = 0; i < balance.toNumber(); i++) {
         const tokenId = (await contract.tokenOfOwnerByIndex(account, i)).toNumber();
-        console.log(tokenId);
         const tokenUri = await contract.tokenURI(tokenId);
         const content = (await axios.get(tokenUri)).data;
-        console.log(content);
-        console.log('contract.address', contract.address);
         nfts.push({...content, nftId: tokenId, nftContractAddress: contract.address });
       }
     } catch(error) {
@@ -72,9 +66,7 @@ export const sendNft = async (account, nftId) => {
     const signer = provider.getSigner()
 
     try {
-      console.log('account', account);
       const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-      console.log(contract);
       const transaction = await contract["safeTransferFrom(address,address,uint256)"](localStorage.getItem("address") /* from */, account /* to */, nftId);
       await transaction.wait()
     } catch(error) {
@@ -100,10 +92,7 @@ export const getMonetizationInfo = async () => {
       for (let i=0; i<totalSupply; i++) {
         owners.add(await contract.ownerOf(i))
       }
-      console.log('owners', owners);
       for (const owner of owners) {
-        console.log('owner money mint', ethers.utils.formatEther(await contract.addressToAmountMint(owner)));
-        console.log('owner money donate', ethers.utils.formatEther(await contract.addressToAmountDonate(owner)));
         res.mintRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountMint(owner))});
         res.donationRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountDonate(owner))});
       }
@@ -123,7 +112,7 @@ export const getContractBalance = async (nftContractAddress) => {
     const balance = await provider.getBalance(nftContractAddress);
     return {data: balance.toNumber(), error: null};
   } catch(error) {
-    console.log(error);
+    console.error(error);
     return {data: null, error};
   }
 }
@@ -142,9 +131,9 @@ export const sendCet = async ({amountInCet}) => {
       await transaction.wait()
         
     } catch(error) {
-      console.log(error)
+      console.error(error)
     }
   } catch(error) {
-    console.log(error)
+    console.error(error)
   }
 }

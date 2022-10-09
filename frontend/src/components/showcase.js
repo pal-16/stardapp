@@ -6,7 +6,6 @@ import { extractNameFromEncryptedFileName, extractSlug } from "../utils/manipula
 import { getContent, listContents } from "../utils/rest";
 
 const Showcase = (props) => {
-  console.log(props);
   return (
     <div className="showcase">
       <ResponsiveMasonry columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}>
