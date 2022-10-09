@@ -80,13 +80,6 @@ const App = () => {
     setLoading(false);
   };
 
-  const handleItemClick = async (item) => {
-    setContent(item);
-    if (!(accessToken && accessToken.length>0)) {
-      alert('Looks like either you are disconnected or connected with a wallet that does not contain a Fanstop NFT!')
-    }
-  }
-
   const mint = async () =>  {
     // Get wallet details
     if(!hasEthereum()) return
