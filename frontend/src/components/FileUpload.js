@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-import React,{Component} from 'react';
-import { API_BASE_URL, PACKED_NONCE } from '../constants';
-import { useState, useEffect } from "react";
+import React, { useState } from 'react';
+import { API_BASE_URL } from '../constants';
 
 const FileUpload = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);

@@ -1,11 +1,6 @@
-import axios from 'axios';
-import { ethers } from 'ethers'
-import React,{Component} from 'react';
-import { API_BASE_URL, PACKED_NONCE } from '../constants';
-import { useState, useEffect } from "react";
+import React, { useState } from 'react';
+import { sendNft } from '../utils/connectWallet';
 import { CoinexIcon } from './coinexIcon';
-import { hasEthereum, sendNft } from '../utils/connectWallet';
-import { getContractDetails } from '../utils/rest';
 
 const SendNft = (props) => {
   const [address, setAddress] = useState(null);

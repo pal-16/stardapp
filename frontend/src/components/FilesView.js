@@ -1,10 +1,9 @@
-import { extractNameFromEncryptedFileName, extractSlug } from "../utils/manipulator";
-import { DeleteIcon } from "./deleteIcon";
-import { EditIcon } from "./editIcon";
-import { ViewIcon } from "./viewIcon";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { extractNameFromEncryptedFileName, extractSlug } from "../utils/manipulator";
 import ConfirmDelete from "./ConfirmDelete";
+import { DeleteIcon } from "./deleteIcon";
+import { ViewIcon } from "./viewIcon";
 
 const FilesView = (props) => {
   const [showFileUploadModal, setShowFileUploadModal] = useState (false);
@@ -18,79 +17,7 @@ const FilesView = (props) => {
     setShowFileUploadModal(false);
     setFileToBeDeleted(undefined)
   };
-  // const tmp = [
-  //   {filename: "encrypted_Awesome.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Awesomeness.webp", uri: "blob…"},
-  //   {filename: "encrypted_Amazing.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_All-the-things.webp", uri: "b…"},
-  //   {filename: "encrypted_first-kiss.gif", uri: "blob:h…"},
-  //   {filename: "encrypted_Badass.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Awkward.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_BOOty.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_giphy.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_BRB.webp", uri: "blob:http://…"},
-  //   {filename: "encrypted_Balance.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Beachy.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Beetlejuice.webp", uri: "blob…"},
-  //   {filename: "encrypted_Bet.webp", uri: "blob:http://…"},
-  //   {filename: "encrypted_Blessed.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Blessing.webp", uri: "blob:ht…"},
-  //   {filename: "encrypted_Believe.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Blimey.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Bliss.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_Blizzard.webp", uri: "blob:ht…"},
-  //   {filename: "encrypted_Blossoms.webp", uri: "blob:ht…"},
-  //   {filename: "encrypted_Boom.webp", uri: "blob:http:/…"},
-  //   {filename: "encrypted_Boozy.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_Boos.webp", uri: "blob:http:/…"},
-  //   {filename: "encrypted_Bravo.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_Break.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_Bravery.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Breathe.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Brilliant.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Breathless.webp", uri: "blob:…"},
-  //   {filename: "encrypted_Bunnies.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Bucket-list.webp", uri: "blob…"},
-  //   {filename: "encrypted_Butterball.webp", uri: "blob:…"},
-  //   {filename: "encrypted_Champagne.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Buttercup.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Bruh.webp", uri: "blob:http:/…"},
-  //   {filename: "encrypted_Calming.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_But-first-coffee.webp", uri: ""},
-  //   {filename: "encrypted_Change.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Classic.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Cheers.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Chillin.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Coming-soon.webp", uri: "blob…"},
-  //   {filename: "encrypted_Clover.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Confetti.webp", uri: "blob:ht…"},
-  //   {filename: "encrypted_Countdown.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Creepin.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Cottontail.webp", uri: "blob:…"},
-  //   {filename: "encrypted_Days-like-these.webp", uri: "…"},
-  //   {filename: "encrypted_Cup-o-cheer.webp", uri: "blob…"},
-  //   {filename: "encrypted_Crescendo.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Dont-quit-your-daydream.webp"},
-  //   {filename: "encrypted_Cutest.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Dream-big.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Destination.webp", uri: "blob…"},
-  //   {filename: "encrypted_Dreamy.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Dreamer.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Dreaming.webp", uri: "blob:ht…"},
-  //   {filename: "encrypted_Dreebp", uri: "blob:http://lo…"},
-  //   {filename: "encrypted_Dreams.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Eggy.webp", uri: "blob:http:/…"},
-  //   {filename: "encrypted_Egg-cited.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Enjoy.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_Elfie.webp", uri: "blob:http:…"},
-  //   {filename: "encrypted_Enchantment.webp", uri: "blob…"},
-  //   {filename: "encrypted_Emotional.webp", uri: "blob:h…"},
-  //   {filename: "encrypted_Endless.webp", uri: "blob:htt…"},
-  //   {filename: "encrypted_Epic.webp", uri: "blob:http:/…"},
-  //   {filename: "encrypted_Escape.webp", uri: "blob:http…"},
-  //   {filename: "encrypted_Everything.webp", uri: "blob:…"},
-  //   {filename: "encrypted_Exhale.webp", uri: "blob:http…"}
-  //   ];
+
   return (
     <div className="overflow-x-auto">
       <div className="min-w-screen min-h-screen bg-gray-100 flex items-start justify-center bg-gray-100 font-sans overflow-hidden">

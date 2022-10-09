@@ -1,9 +1,6 @@
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { extractNameFromEncryptedFileName, extractSlug } from "../utils/manipulator";
-
-import { getContent, listContents } from "../utils/rest";
 
 const Showcase = (props) => {
   return (

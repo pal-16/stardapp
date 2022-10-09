@@ -1,10 +1,4 @@
-import { extractNameFromEncryptedFileName, extractSlug } from "../utils/manipulator";
-import { DeleteIcon } from "./deleteIcon";
-import { EditIcon } from "./editIcon";
-import { ViewIcon } from "./viewIcon";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ConfirmDelete from "./ConfirmDelete";
 import { getMonetizationInfo } from "../utils/connectWallet";
 import { CoinexIcon } from "./coinexIcon";
 

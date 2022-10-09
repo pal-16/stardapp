@@ -1,9 +1,7 @@
 
-import React,{Component} from 'react';
-import { useState, useEffect } from "react";
+import React, { useState } from 'react';
+import { sendCet } from '../utils/connectWallet';
 import { CoinexIcon } from './coinexIcon';
-import { hasEthereum, sendCet } from '../utils/connectWallet';
-import { getContractDetails, uploadTxn } from '../utils/rest';
 
 const DonateModal = (props) => {
   const [amountInCet, setAmountInCet] = useState(0);

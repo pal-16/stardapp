@@ -1,9 +1,6 @@
+import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import FilesView from "./FilesView";
-import { Link } from "react-router-dom";
-import {
-  useParams,
-} from "react-router-dom";
-import { useState, useEffect } from "react";
 
 import FileUpload from "./FileUpload";
 import MonetizationView from "./MonetizationView";

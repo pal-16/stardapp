@@ -1,24 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "./components/Navbar";
 import Showcase from "./components/showcase";
 import { generateTokenUri, getContent, listContents } from "./utils/rest";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SingleFileView from "./components/SingleFileView";
-import FilesView from "./components/FilesView";
-import Sidebar from "./components/Sidebar";
-import { useQuery } from "react-query";
+import { ethers } from 'ethers';
 import { useCookies } from "react-cookie";
-import DonateModal from "./components/DonateModal";
-import Minter2 from './artifacts/contracts/Minter2.sol/Minter2.json'
-import { ethers } from 'ethers'
-import { getContractBalance, hasEthereum } from "./utils/connectWallet";
-import { NEXT_PUBLIC_MINTER_ADDRESS, MINT_PRICE } from "./constants";
-import Welcome from "./components/Welcome";
-import { connectWallet, disconnectWallet } from "./utils/connectWallet";
-import { getAccessToken, removeAccessToken } from "./utils/rest";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Minter7 from './artifacts/contracts/Minter7.sol/Minter7.json';
+import Sidebar from "./components/Sidebar";
+import SingleFileView from "./components/SingleFileView";
 import TokensView from "./components/TokensView";
+import Welcome from "./components/Welcome";
+import { MINT_PRICE, NEXT_PUBLIC_MINTER_ADDRESS } from "./constants";
+import { connectWallet, disconnectWallet, hasEthereum } from "./utils/connectWallet";
+import { getAccessToken, removeAccessToken } from "./utils/rest";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -92,7 +88,7 @@ const App = () => {
 
         // setMintLoading(true);
         // Interact with contract
-        const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter2.abi, signer)
+        const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
         const { data, error } = await generateTokenUri();
         if (error) {
           console.error(error);

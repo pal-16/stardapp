@@ -1,13 +1,9 @@
-import { SendIcon } from "./sendIcon";
-import { ViewIcon } from "./viewIcon";
-import {
-  useParams,
-  useLocation
-} from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getNftsForAccount, sendNft } from "../utils/connectWallet";
 import { COINEX_TESTNET_EXPLORER } from "../constants";
+import { getNftsForAccount } from "../utils/connectWallet";
+import { SendIcon } from "./sendIcon";
 import SendNft from "./SendNft";
+import { ViewIcon } from "./viewIcon";
 
 
 const TokensView = (props) => {

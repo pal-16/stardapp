@@ -1,7 +1,7 @@
-import { ethers } from 'ethers';
-import { NEXT_PUBLIC_MINTER_ADDRESS } from '../constants';
-import Minter7 from '../artifacts/contracts/Minter7.sol/Minter7.json'
 import axios from 'axios';
+import { ethers } from 'ethers';
+import Minter7 from '../artifacts/contracts/Minter7.sol/Minter7.json';
+import { NEXT_PUBLIC_MINTER_ADDRESS } from '../constants';
 
 // Check for MetaMask wallet browser extension
 export const hasEthereum = () => {

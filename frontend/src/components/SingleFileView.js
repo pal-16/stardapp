@@ -1,12 +1,9 @@
-import axios from 'axios';
 
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import {
-  useParams,
-  useLocation
+  useLocation, useParams
 } from "react-router-dom";
 import { extractNameFromEncryptedFileName, reconstructBlobUrl } from '../utils/manipulator';
-import { useState, useEffect } from "react";
 import DonateModal from './DonateModal';
 
 const SingleFileView = () => {
