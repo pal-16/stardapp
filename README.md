@@ -16,10 +16,10 @@ Dappstar is a decentralized-yet-private content sharing platform for creators wh
 
 - Store by-default-encrypted content on IPFS(so zero dependency on centralized system and protection of their data)
 - Token-gate their content; so only that fan who possesses a certain NFT (call this 'Long-NFT') can access the content forever.
-- Optionally, also have the feature of Quick-NFTs (Quick-NFTs are special NFTs that is designed as part of this project which provides its holder a temporary access to the creator's private content. **Quick-NFTs are made possible by Arseeding & we will focus on Quick-NFTs for this hackathon ❤️**)
+- Feature of Quick-NFTs (Quick-NFTs are special NFTs that is designed as part of this project which provides its holder a temporary access to the creator's private content. **Quick-NFTs are made possible by Arseeding & we will focus on Quick-NFTs for this hackathon ❤️**)
 - - -
 # Dappstar walkthrough
-The app is live at https://dappstar.vercel.app/. Let's break down the walkthrough into 2 segments:
+The app is live at https://dappstar.vercel.app/ and here is the [demo video][demo]. Let's break down the walkthrough into 2 segments:
 - Creator's perspective
 - Fan's perspective
 
@@ -125,5 +125,5 @@ I believe temporary access is one of the major pain points of the consumers of t
 [chain]: https://testnet.coinex.net/
 [nft-contract-address]: https://testnet.coinex.net/address/0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C
 [CET]: https://www.coinex.com/token
-[demo]: <https://www.youtube.com/>
+[demo]: <https://youtu.be/jwnS7M9jhys>
 [1ca3af421698b16aa8846ce19e22559668e7bbf5]: <https://github.com/ankitshubham97/BroadcastSOS/commit/1ca3af421698b16aa8846ce19e22559668e7bbf5>
