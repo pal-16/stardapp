@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL, NFT_CONTRACT_ADDRESS } from '../constants';
 
-export const getAccessToken = async ({signature, walletPublicAddress}) => {
+export const getAccessToken = async ({signature, walletPublicAddress, ttlFileUri}) => {
   try{
     const res = await axios.post(
       `${API_BASE_URL}/token`, 
@@ -11,6 +11,7 @@ export const getAccessToken = async ({signature, walletPublicAddress}) => {
         walletPublicAddress,
         nftContractAddress: NFT_CONTRACT_ADDRESS,
         nftId: '0',
+        ttlFileUri
       },
       {
         withCredentials: true,

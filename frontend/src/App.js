@@ -39,7 +39,7 @@ const App = () => {
     const { address, message, signature} = await connectWallet();
     localStorage.setItem('address', address);
     setAccount(address);
-    const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address});
+    const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address, ttlFileUri: localStorage.getItem('ttlFileUri')});
     if (error) {
       setError(error);
     }
@@ -78,43 +78,32 @@ const App = () => {
 
   const mint = async () =>  {
     // Get wallet details
-    if(!hasEthereum()) return
+    if(!hasEthereum()) return;
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner()
 
-      try {
-        const address = await signer.getAddress()
-
-        // setMintLoading(true);
-        // Interact with contract
-        const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-        const { data, error } = await generateTokenUri();
-        if (error) {
-          console.error(error);
-          return;
-        }
-        const { tokenUri } = data;
-        if (!tokenUri) {
-          console.error(`Could not find tokenUri`);
-          return;
-        }
-        const transaction = await contract.mint(tokenUri, { value: ethers.utils.parseEther(MINT_PRICE.toString()) })
-        await transaction.wait()
-
-        // setMintMessage(`Congrats, you minted ${mintQuantity} token(s)!`)
-        // setMintError(false)
-      } catch(error) {
-        // setMintMessage('Connect your wallet first.');
-        // setMintError(true)
+      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+      const { data, error } = await generateTokenUri();
+      if (error) {
         console.error(error);
+        return;
       }
+      const { tokenUri, ttlFileUri } = data;
+      localStorage.setItem('ttlFileUri', ttlFileUri);
+      if (!tokenUri) {
+        const msg = `Could not find tokenUri`;
+        console.error(msg);
+        alert(msg);
+        return;
+      }
+      const transaction = await contract.mint(tokenUri, { value: ethers.utils.parseEther(MINT_PRICE.toString()) })
+      await transaction.wait()
+
     } catch(error) {
-        // setMintMessage(error.message)
-        // setMintError(true)
       console.error(error);
+      alert(error.data?.message ?? 'Something went wrong!');
     }
-    // setMintLoading(false)
   }
 
   
@@ -136,7 +125,6 @@ const App = () => {
           ondisconnectWallet={ondisconnectWallet}
           setOpenManageTokensScreen={setOpenManageTokensScreen}
         />
-        {/* <button onClick={mint} className="mt-[8rem]"> Mint </button> */}
         <Routes>
           <Route path="/" element={
             photos && photos.length > 0

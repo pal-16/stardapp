@@ -9,6 +9,8 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "arseeding-js": "^0.0.17",
+    "arweave": "^1.11.6",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
     "ethers": "5.4.5",

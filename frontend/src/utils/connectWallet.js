@@ -40,40 +40,32 @@ export const getNftsForAccount = async (account) => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
-
-    try {
-      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-      const balance = await contract.balanceOf(account);
-      for(let i = 0; i < balance.toNumber(); i++) {
-        const tokenId = (await contract.tokenOfOwnerByIndex(account, i)).toNumber();
-        const tokenUri = await contract.tokenURI(tokenId);
-        const content = (await axios.get(tokenUri)).data;
-        nfts.push({...content, nftId: tokenId, nftContractAddress: contract.address });
-      }
-    } catch(error) {
-      console.error(error);
+    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+    const balance = await contract.balanceOf(account);
+    for(let i = 0; i < balance.toNumber(); i++) {
+      const tokenId = (await contract.tokenOfOwnerByIndex(account, i)).toNumber();
+      const tokenUri = await contract.tokenURI(tokenId);
+      const content = (await axios.get(tokenUri)).data;
+      nfts.push({...content, nftId: tokenId, nftContractAddress: contract.address });
     }
   } catch(error) {
     console.error(error);
+    alert(error.data?.message ?? 'Something went wrong!');
   }
   return nfts;
 }
 
 export const sendNft = async (account, nftId) => {
   if(!hasEthereum()) return;
-  try {
+  try {    
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
-
-    try {
-      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-      const transaction = await contract["safeTransferFrom(address,address,uint256)"](localStorage.getItem("address") /* from */, account /* to */, nftId);
-      await transaction.wait()
-    } catch(error) {
-      console.error(error);
-    }
+    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+    const transaction = await contract["safeTransferFrom(address,address,uint256)"](localStorage.getItem("address") /* from */, account /* to */, nftId);
+    await transaction.wait()
   } catch(error) {
     console.error(error);
+    alert(error.data?.message ?? 'Something went wrong!');
   }
 }
 
@@ -84,23 +76,20 @@ export const getMonetizationInfo = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
 
-    try {
-      const address = await signer.getAddress()
-      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-      const owners = new Set();
-      const totalSupply = await contract.totalSupply();
-      for (let i=0; i<totalSupply; i++) {
-        owners.add(await contract.ownerOf(i))
-      }
-      for (const owner of owners) {
-        res.mintRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountMint(owner))});
-        res.donationRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountDonate(owner))});
-      }
-    } catch(error) {
-      console.error(error);
+    const address = await signer.getAddress()
+    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+    const owners = new Set();
+    const totalSupply = await contract.totalSupply();
+    for (let i=0; i<totalSupply; i++) {
+      owners.add(await contract.ownerOf(i))
+    }
+    for (const owner of owners) {
+      res.mintRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountMint(owner))});
+      res.donationRevenues.push({address: owner, revenue: ethers.utils.formatEther(await contract.addressToAmountDonate(owner))});
     }
   } catch(error) {
     console.error(error);
+    alert(error.data?.message ?? 'Something went wrong!');
   }
   return res;
 }
@@ -123,17 +112,13 @@ export const sendCet = async ({amountInCet}) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
 
-    try {
-      const address = await signer.getAddress()
-      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-      const transaction = await contract.donate( { value: ethers.utils.parseEther(amountInCet) })
+    const address = await signer.getAddress()
+    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+    const transaction = await contract.donate( { value: ethers.utils.parseEther(amountInCet) })
 
-      await transaction.wait()
-        
-    } catch(error) {
-      console.error(error)
-    }
+    await transaction.wait()
   } catch(error) {
-    console.error(error)
+    console.error(error);
+    alert(error.data?.message ?? 'Something went wrong!');
   }
 }

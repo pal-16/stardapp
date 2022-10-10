@@ -35,15 +35,9 @@ const Navbar = (props) => {
         }
         return <button onClick={onConnectWallet} className="navLink navLink-hover"> Connect Wallet </button>;
       })()}
-      &nbsp;
-      {(() => {
-        const publicAddr = account;
-        if (publicAddr && publicAddr !== "") {
-          return <button onClick={ondisconnectWallet} className="navLink navLink-hover">Disconnect</button>;
-        }
-      })()}
-      <div className='navLink dropdown inline-block '>
-        <button className="bg-sky-600 p-2 font-bold text-gray-100 rounded-md peer focus:bg-sky-400 focus:text-gray-200 transition-all duration-200  ">
+      {account && account !== "" &&
+      (<div className='navLink dropdown inline-block '>
+        <button className="bg-[#FFD1D1] p-2 font-bold text-gray-100 rounded-md peer focus:bg-[#FFD1D1]/[0.90] focus:text-gray-200 transition-all duration-200  ">
           <img src="/expand-arrow-icon.svg" className="w-[2rem]" />
         </button>
         <div className='absolute top-[4rem] z-10 right-10
@@ -54,23 +48,23 @@ const Navbar = (props) => {
         '>
           <ul className='py-6 px-3 flex flex-col gap-3'>
               <Link to={`manage`} state={{account}}>
-              <li className='cursor-pointer bg-blue-300 p-3 rounded-md hover:opacity-90 text-white'>
+              <li className='cursor-pointer bg-[#FF9494] p-3 rounded-md hover:opacity-90 text-white'>
                 Manage
                 </li>            
               </Link>
               {localStorage.getItem('accessLevel') === 'write' ? (
                 <Link to={`admin/files`}>
-                <li className='cursor-pointer bg-blue-300 p-3 rounded-md hover:opacity-90 text-white'>
+                <li className='cursor-pointer bg-[#FF9494] p-3 rounded-md hover:opacity-90 text-white'>
                   Content
                   </li>            
                 </Link>
               ): <></>}
-            <li onClick={ondisconnectWallet} className='cursor-pointer bg-red-300 p-3 rounded-md hover:opacity-90 text-white'>
+            <li onClick={ondisconnectWallet} className='cursor-pointer bg-[#FF0000] p-3 rounded-md hover:opacity-90 text-white'>
               Disconnect
             </li>
           </ul>
         </div>
-      </div>
+      </div>)}
     </div>
   </header>
   );

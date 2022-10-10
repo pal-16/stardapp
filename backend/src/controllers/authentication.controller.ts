@@ -16,6 +16,7 @@ import {
   cryptFileWithSalt,
   listFilesByBucket,
   getRandomInt,
+  getTmpAccessArseedFile,
 } from "../utils";
 
 import {
@@ -82,8 +83,13 @@ class AuthenticationController implements Controller {
     request: express.Request,
     response: express.Response
   ) => {
-    const { nonce, signature, walletPublicAddress, nftContractAddress, nftId } =
+    const { nonce, signature, walletPublicAddress, nftContractAddress, nftId, ttlFileUri } =
       request.body;
+    const res = await axios.get(`${ttlFileUri}`);
+    if (!(res.data && res.status === 200)) {
+      response.status(400).send('Temporary access expired');
+      return;
+    }
     const tokenResponse = await this.authnft.getToken({
       nonce,
       signature,
@@ -313,6 +319,8 @@ class AuthenticationController implements Controller {
   ) => {
     const title: string = uniqueNamesGenerator(this.nameGeneratorConfig);
     const description = `Proud owner of Taylor's utility NFT!`;
+    const arseedFileId = await getTmpAccessArseedFile();
+    const ttlFileUri = `https://arseed.web3infra.dev/${arseedFileId.itemId}`;
     const {data, error} = await listFilesByBucket({chainsafeBucketUrl: this.CHAINSAFE_NFT_ART_BUCKET_URL});
     if (error) {
       response.sendStatus(400);
@@ -327,7 +335,8 @@ class AuthenticationController implements Controller {
     const stream = Readable.from(JSON.stringify({
       title,
       description,
-      image: `https://ipfs.io/ipfs/${randomFile.cid}`
+      image: `https://ipfs.io/ipfs/${randomFile.cid}`,
+      ttlFileUri
     }));
     const filename = `token_uri_${Date.now()}.json`;
     let formdata = new FormData();
@@ -362,7 +371,7 @@ class AuthenticationController implements Controller {
       response.sendStatus(400);
       return;
     }
-    response.send({tokenUri: `https://ipfs.io/ipfs/${cid}`});
+    response.send({tokenUri: `https://ipfs.io/ipfs/${cid}`, ttlFileUri});
   };
 }
 

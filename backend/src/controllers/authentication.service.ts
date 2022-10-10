@@ -10,7 +10,6 @@ import { AbiItem } from 'web3-utils';
 import jwt from 'jsonwebtoken';
 import axios, { ResponseType } from 'axios';
 
-
 async function doesWalletOwnNft({walletPublicAddress, nftContractAddress}:{walletPublicAddress: string, nftContractAddress: string}): Promise<boolean> {
   const resp = await axios({
     method: 'get',

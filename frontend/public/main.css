@@ -8,10 +8,11 @@ html {
   font-size: 62.5%;
   scroll-behavior: smooth;
   font-family: 'Montserrat', sans-serif;
+  background-color: #FFF5E4;
 }
 
 .navbar {
-  @apply flex items-center justify-between w-full fixed top-0 z-10 h-[7rem] p-[3.5rem] bg-slate-100/[0.99]
+  @apply flex items-center justify-between w-full fixed top-0 z-10 h-[7rem] p-[3.5rem] bg-[#FFE3E1]/[0.99]
 }
 
 .navbar-fixed {
@@ -23,11 +24,11 @@ html {
 }
 
 .navLink {
-  @apply text-2xl font-semibold text-[#181b21] mx-[0.8rem] px-[0.8rem] py-[0.4rem] rounded-[0.8rem] bg-transparent
+  @apply text-2xl font-semibold text-[#181b21] mx-[0.8rem] px-[0.8rem] py-[0.4rem] rounded-[0.8rem] bg-[#FFD1D1]/[0.90]
 }
 
 .navLink-hover {
-  @apply hover:bg-[#181b21] hover:bg-opacity-10 transition-all duration-500
+  @apply hover:bg-[#FFD1D1] hover:bg-opacity-10 transition-all duration-500
 }
 
 .showcase {
