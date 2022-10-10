@@ -54,16 +54,16 @@ Let's try to understand how it all works by going through the journey!
 1. A fan initiates the journey by minting a Quick-NFT.
 2. The client (Dappstar's front end), before initiating the mint call to the NFT smart contract, calls Dappstar's back end to get token-uri (it is for storing NFT metadata like title, NFT's image URI etc; can be ignored for now).
 3. Back end, while generating the token-uri, also creates the ttlFile and uploads on web3infra without payment; it uses `createAndSubmitItem` method of `arseeding-js` SDK to do so.
-4. Back end responds with the token-uri and ttlFileUri.
+4. Back end responds with the token-uri and ttlFileUri; ttlFileUri is the URI of the ttlFile that is uploaded on the web3infra.
 5. Client saves the ttlFileUri in browser's local storage.
 6. Client now proceeds to mint the Quick-NFT because now it has the token-uri.
 7. User reconnects his wallet with the intention to view the private content.
-8. When he connects the wallet, he basically signs a nonce. The client passes the nonce, signature, his wallet address and the saved ttlFileUri to the back end where the latter runs 3 checks: verifies the signature, verifies that the address holds the Quick-NFT, checks that the ttlFile was created by it (using `getItemMeta` method of `arseeding-js`) and ensures that ttlFile exists. If all are satisfied, it issues an access token to the client as a cookie. This access token is valid for an hour
+8. When he connects the wallet, he basically signs a nonce. The client passes the nonce, signature, his wallet address and the saved ttlFileUri to the back end where the latter runs 4 checks: verifies the signature, verifies that the address holds the Quick-NFT, checks that the ttlFile was created by it (using `getItemMeta` method of `arseeding-js`) and ensures that ttlFile exists. If all are satisfied, it issues an access token to the client as a cookie. This access token is valid for an hour
 9. The client passes this access token as a cookie to server for all the subsequent requests. If the access token is not expired, the back end responds with the protected content, otherwise it denies.
 10. Let's say the access token expires after an hour. The client can again get a new access token until the ttlfile exists and the wallet holds the Quick-NFT!
 
 ## Benefits of using Arseeding to accomplish decentralized temporary access
-1. Arseeding is a decentralized solution, thus there is a trust that if it commits to deleting the file after 24 hours, it would.
+1. Arseeding is a decentralized solution, thus there is a decentralized-trust that if the network commits to deleting the file after 24 hours, it would.
 2. It is absolutely free to design the decentralized temporary access because the key is that you should not pay while uploading the file!
 
 ## Some negative user flows:
@@ -111,6 +111,13 @@ You could also check out these:
 5. Use fan's wallet and gift NFT to some other address
 6. Use fan's wallet and donate some CETs to the creator
 - - -
+
+# Limitations & optimizations
+1. The 24-hour period is not configurable because it is directly getting derived from the 24-hour period for which an unpaid uploaded file stays in the web3infra. But I believe this should be easy to make it configurable from web3infra side.
+2. We don't verify the ttlFile validity on any request to access the protected resource. It is because it would result in higher API call latency. Instead, we do it lazily while (re)generating the access token. The access tokens are set to expire in an hour, so in order to continue getting access to the protected resource, the client has to fetch a new access token after an hour lapses.
+
+- - -
+
 # Future
 I believe temporary access is one of the major pain points of the consumers of the creator economy(CE); especially in the regions with relatively lower-than-average per-capita-income. Temporary access can bring more consumers to the CE. This would undoubtedly benefit the producers of the CE as well as play a crucial role in uplifting the quality of life of the new consumers.
 
