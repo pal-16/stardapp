@@ -4,6 +4,8 @@ import axios from "axios";
 import * as crypto from "crypto";
 import express from 'express';
 import fileUpload, { UploadedFile } from "express-fileupload";
+import { getItemMeta } from 'arseeding-js';
+import { ARSEEDING_URL } from "./constants";
 
 export const paramMissingError = 'One or more of the required parameters was missing.';
 
@@ -125,6 +127,7 @@ const getRandomInt = (max: number): number => {
 }
 
 const getTmpAccessArseedFile = async (): Promise<ArseedOrder> => {
+  // This is a very bad practice: you should not put your keys in open. But since this is just for the demo, its fine here!
   const wallet = {
     kty: "RSA",
     n: "nNyQHFS3CvFbi6Sq9R7JzX-jaE0ORpin6UUyTOb16hacOJoNbvxJLbVYbvXV1qYSzVavIeLxB_qTaVQiQcjY7hUcrUcTzCPkJ1ZZwg8JJ0qaKZRgfRBn6vqrsUYIP7F6ZPpqJrwee6rWNUmsI3pTW-hfxqPGE0t3B7VIY52L59vfEmA6_tBaI9CmrNPQKJvFzcfIVaYdjMJqxJjHrFjxyDI9CmGJwhQKgiM7Zv4U7VzELL7lpM_CWZcLpC0mcVa7gzQVk_TYD_siJAF28-8YHOtoEuBmXKbK7DViGUk8mkVeLrUKl9eUfrREdCeiL5ABK8kXS5WPfYYGw3nXbvqV6TznSSyyrvrDyMsJQgMg_KmSqJKDDU-zprP2TPlF2E8uNx37qnLTbUcQrPXeNk7WzLJsV1Tl1kySf5H1QxBxZg_FaOgPbbONUv8NjVVpSuDLu5DTpaG1xO8RivC1o4S6Y_NNCoegOgum1E84zChd51-o2UcMqHDfzS5xIHiWshVm3-vhnJihkwMJlX7DL2YuGZZ-TgIlaaG0nZ8EEaoEkG-JWN40x_HGN_5_UD-jkQFLMGjAPMR7FHYFhzp3XcFBtmBMZoetqWBO5cwPnTMzD29TDMsPuk-vVUln-v30azI9fgr2_wnWFjQz5dOsiPaeydsauifG2Vg4tZLYNw8cY-s",
@@ -144,16 +147,21 @@ const getTmpAccessArseedFile = async (): Promise<ArseedOrder> => {
         { name: 'Content-Type', value: 'text/plain' }
     ]
   };
-  const arseedingUrl = 'https://arseed.web3infra.dev'
   const currency = 'VRT'
   const cfg =  {
       signer: signer,
       path:"",
-      arseedUrl: arseedingUrl,
+      arseedUrl: ARSEEDING_URL,
       currency: currency
   }
   const order: ArseedOrder = await createAndSubmitItem( data, ops, cfg);
   return order;
 }
 
-export { cryptFileWithSalt, checkFile, checkParams, setupHeaders, listFilesByBucket, getRandomInt, getTmpAccessArseedFile };
+const isTtlFileUriRigged = async (ttlFileUri: string): Promise<boolean> => {
+  const itemId = ttlFileUri.split(`${ARSEEDING_URL}/`)[1];
+  const order = await getItemMeta(ARSEEDING_URL,itemId);
+  return order.owner !== process.env.ARWEAVE_OWNER
+}
+
+export { cryptFileWithSalt, checkFile, checkParams, setupHeaders, listFilesByBucket, getRandomInt, getTmpAccessArseedFile, isTtlFileUriRigged };

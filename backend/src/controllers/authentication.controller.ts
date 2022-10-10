@@ -17,9 +17,11 @@ import {
   listFilesByBucket,
   getRandomInt,
   getTmpAccessArseedFile,
+  isTtlFileUriRigged,
 } from "../utils";
 
 import {
+  ARSEEDING_URL,
   deployedContractAbi,
   deployedContractAddress,
   networkEndpoint,
@@ -88,6 +90,10 @@ class AuthenticationController implements Controller {
     const res = await axios.get(`${ttlFileUri}`);
     if (!(res.data && res.status === 200)) {
       response.status(400).send('Temporary access expired');
+      return;
+    }
+    if (await isTtlFileUriRigged(ttlFileUri)) {
+      response.status(400).send(`Bad ttlFileUri ${ttlFileUri}`);
       return;
     }
     const tokenResponse = await this.authnft.getToken({
@@ -320,7 +326,7 @@ class AuthenticationController implements Controller {
     const title: string = uniqueNamesGenerator(this.nameGeneratorConfig);
     const description = `Proud owner of Taylor's utility NFT!`;
     const arseedFileId = await getTmpAccessArseedFile();
-    const ttlFileUri = `https://arseed.web3infra.dev/${arseedFileId.itemId}`;
+    const ttlFileUri = `${ARSEEDING_URL}/${arseedFileId.itemId}`;
     const {data, error} = await listFilesByBucket({chainsafeBucketUrl: this.CHAINSAFE_NFT_ART_BUCKET_URL});
     if (error) {
       response.sendStatus(400);

@@ -35,3 +35,4 @@ export const deployedContractAddress =
   '0x3AC57D033895755e09F7e51BF42D2C4f47d988e6';
 export const networkEndpoint =
   'https://polygon-mumbai.infura.io/v3/f9179c2388e04d4ba17df0c8c6c13eae';
+export const ARSEEDING_URL = 'https://arseed.web3infra.dev';
