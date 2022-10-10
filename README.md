@@ -1,6 +1,12 @@
 # ✨Dappstar ✨
 _Decentralized, temporary & secure access to your favourite content!_
 - - -
+Before we start, if you are the judge/panelist for , here are important quick links:
+1. Live Project: https://dappstar.vercel.app/
+2. Demo: https://youtu.be/jwnS7M9jhys
+3. How to interact with the live project: https://github.com/ankitshubham97/dappstar#interacting-with-the-live-project
+
+- - -
 # Problems with the current state of creator economy?
 ## Dependency on centralized system
 What if the service on which the creator hosted their content goes down? What if the service decides to ban that particular creator for whatever reason? The creator is helpless before such centralized systems!
@@ -16,12 +22,14 @@ Dappstar is a decentralized-yet-private content sharing platform for creators wh
 
 - Store by-default-encrypted content on IPFS(so zero dependency on centralized system and protection of their data)
 - Token-gate their content; so only that fan who possesses a certain NFT (call this 'Long-NFT') can access the content forever.
-- Feature of Quick-NFTs (Quick-NFTs are special NFTs that is designed as part of this project which provides its holder a temporary access to the creator's private content. **Quick-NFTs are made possible by Arseeding & we will focus on Quick-NFTs for this hackathon ❤️**)
+- Feature of [Quick-NFTs][quick-nft] (Quick-NFTs are special NFTs that is designed as part of this project which provides its holder a temporary access to the creator's private content. **Quick-NFTs are made possible by Arseeding & we will focus on Quick-NFTs for this hackathon ❤️**)
 - - -
 # Dappstar walkthrough
 The app is live at https://dappstar.vercel.app/ and here is the [demo video][demo]. Let's break down the walkthrough into 2 segments:
 - Creator's perspective
 - Fan's perspective
+
+For this hackathon, our focus is on [Quick-NFTs][quick-nft] and how arseeding and web3infra helped in their implementation. Feel free to skip to [Quick-NFTs][quick-nft] section.
 
 ## Creator's perspective.
 Let's assume that Taylor is the creator. For the sake of this hackathon, let's assume that there is only one creator on the Dappstar's platform. Also, her wallet address is [creator-wallet-address][creator-wallet-address] and she created an NFT smart contract via this wallet and is currently deployed on [Coinex testnet][chain] at the address [0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C][nft-contract-address]. The NFT contract enables others to mint a token for themselves by paying certain amount in [CET][CET]. This amount flows back to her wallet address. And the holders of the NFT could get access to her content (whether the access is permanent or temporary depends on if the NFT minted was a Long-NFT or a Quick-NFT; we will focus on Quick-NFTs for this hackathon)!
@@ -126,4 +134,4 @@ I believe temporary access is one of the major pain points of the consumers of t
 [nft-contract-address]: https://testnet.coinex.net/address/0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C
 [CET]: https://www.coinex.com/token
 [demo]: <https://youtu.be/jwnS7M9jhys>
-[1ca3af421698b16aa8846ce19e22559668e7bbf5]: <https://github.com/ankitshubham97/BroadcastSOS/commit/1ca3af421698b16aa8846ce19e22559668e7bbf5>
+[quick-nft]: <https://github.com/ankitshubham97/dappstar#quick-nfts>
