@@ -47,7 +47,7 @@ Let's understand how Arseeding is helping to create the Quick-NFTs. There is a f
 ```
 If you use the Arseeding service provided by web3infra, you need to pay for the response order, otherwise the data will clear after 24 hours.
 ```
-**We are using this limitation to create a real-life use case of providing temporary access!** From a very high level, whenever a Quick-NFT is minted, Dappstar also creates a file called ttlFile and uploads on web3infra without paying. Whenever the client tries to access any protected resource (i.e. the private content), Dappstar checks if the ttlFile still exists. If it does, it means that the access could be given otherwise it is denied!
+**We are using this limitation to create a real-life use case of providing temporary access!** From a very high level, whenever a Quick-NFT is minted, Dappstar also creates a file called ttlFile and uploads on web3infra without paying. Whenever the client tries to access any protected resource (i.e. the private content), Dappstar checks if the ttlFile was created by the back end and if it still exists. If it does, it means that the access could be given otherwise it is denied!
 
 ## Engineering the decentralized temporary access with Arseeding
 Let's try to understand how it all works by going through the journey!
@@ -58,7 +58,7 @@ Let's try to understand how it all works by going through the journey!
 5. Client saves the ttlFileUri in browser's local storage.
 6. Client now proceeds to mint the Quick-NFT because now it has the token-uri.
 7. User reconnects his wallet with the intention to view the private content.
-8. When he connects the wallet, he basically signs a nonce. The client passes the nonce, signature, his wallet address and the saved ttlFileUri to the back end where the latter runs 3 checks: verifies the signature, verifies that the address holds the Quick-NFT and ensures that ttlFile exists. If both are satisfied, it issues an access token to the client as a cookie. This access token is valid for an hour
+8. When he connects the wallet, he basically signs a nonce. The client passes the nonce, signature, his wallet address and the saved ttlFileUri to the back end where the latter runs 3 checks: verifies the signature, verifies that the address holds the Quick-NFT, checks that the ttlFile was created by it (using `getItemMeta` method of `arseeding-js`) and ensures that ttlFile exists. If all are satisfied, it issues an access token to the client as a cookie. This access token is valid for an hour
 9. The client passes this access token as a cookie to server for all the subsequent requests. If the access token is not expired, the back end responds with the protected content, otherwise it denies.
 10. Let's say the access token expires after an hour. The client can again get a new access token until the ttlfile exists and the wallet holds the Quick-NFT!
 
@@ -72,6 +72,10 @@ He won't be able to get the access token because the wallet must be containing t
 
 **User tries to connect a wallet with a Quick-NFT but 24-hour window is already over**
 He won't be able to get the access token because the ttlFile must exist!
+
+**User manually creates a duplicate ttlFile & stores its URI in the browser's localstorage**
+The duplicate ttlFile's uri will be sent along with other parameters to get the access token. But it would be denied because since the ttlFile was not created by the back end, the check of 'verifying if the ttlFile was created by the back end' would fail!
+
 - - -
 # Interacting with the live project
 The project is running live on https://dappstar.vercel.app/
