@@ -32,7 +32,7 @@ The app is live at https://dappstar.vercel.app/ and here is the [demo video][dem
 For this hackathon, our focus is on [Quick-NFTs][quick-nft] and how arseeding and web3infra helped in their implementation. Feel free to skip to [Quick-NFTs][quick-nft] section.
 
 ## Creator's perspective.
-Let's assume that Taylor is the creator. For the sake of this hackathon, let's assume that there is only one creator on the Dappstar's platform. Also, her wallet address is [creator-wallet-address][creator-wallet-address] and she created an NFT smart contract via this wallet and is currently deployed on [Coinex testnet][chain] at the address [0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C][nft-contract-address]. The NFT contract enables others to mint a token for themselves by paying certain amount in [CET][CET]. This amount flows back to her wallet address. And the holders of the NFT could get access to her content (whether the access is permanent or temporary depends on if the NFT minted was a Long-NFT or a Quick-NFT; we will focus on Quick-NFTs for this hackathon)!
+Let's assume that Taylor is the creator. For the sake of this hackathon, let's assume that there is only one creator on the Dappstar's platform. Also, her wallet address is 0x4ad53d31Cb104Cf5f7622f1AF8Ed09C3ca980523 and she created an NFT smart contract via this wallet and is currently deployed on [Coinex testnet][chain] at the address [0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C][nft-contract-address]. The NFT contract enables others to mint a token for themselves by paying certain amount in [CET][CET]. This amount flows back to her wallet address. And the holders of the NFT could get access to her content (whether the access is permanent or temporary depends on if the NFT minted was a Long-NFT or a Quick-NFT; we will focus on Quick-NFTs for this hackathon)!
 When she signs in with her wallet, she can:
 1. view her content
 2. manage(add/delete) her content
@@ -129,9 +129,8 @@ You could also check out these:
 # Future
 I believe temporary access is one of the major pain points of the consumers of the creator economy(CE); especially in the regions with relatively lower-than-average per-capita-income. Temporary access can bring more consumers to the CE. This would undoubtedly benefit the producers of the CE as well as play a crucial role in uplifting the quality of life of the new consumers.
 
-[creator-wallet-address]: 0x4ad53d31Cb104Cf5f7622f1AF8Ed09C3ca980523
-[chain]: https://testnet.coinex.net/
-[nft-contract-address]: https://testnet.coinex.net/address/0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C
-[CET]: https://www.coinex.com/token
+[chain]: <https://testnet.coinex.net/>
+[nft-contract-address]: <https://testnet.coinex.net/address/0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C>
+[CET]: <https://www.coinex.com/token>
 [demo]: <https://youtu.be/jwnS7M9jhys>
 [quick-nft]: <https://github.com/ankitshubham97/dappstar#quick-nfts>
