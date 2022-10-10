@@ -41,6 +41,7 @@ const App = () => {
     setAccount(address);
     const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address, ttlFileUri: localStorage.getItem('ttlFileUri')});
     if (error) {
+      alert("Could not get access token. Make sure you have either minted a Long-NFT or a Quick-NFT in the last 24 hours!");
       setError(error);
     }
     if (accessToken) {
