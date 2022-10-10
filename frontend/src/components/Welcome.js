@@ -11,12 +11,14 @@ const Welcome = (props) => {
     if (show === 'connect-wallet') {
       setDescription("Connect your wallet now to check out what new content Taylor is putting up!");
       setCta("Connect Wallet");
+      setCtaInactive("");
     } else if (show === 'mint') {
       setDescription("Mint Taylor's `utility NFT` and get exclusive access to her content while truly supporting her!");
       setCta("Mint Quick NFT");
       setCtaInactive("Mint Long NFT");
     } else if (show === 'empty') {
       setDescription("Taylor has not published any content yet. Maybe support her now?");
+      setCtaInactive("");
       setCta("Donate");
     } else {
       console.error('Invalid show string', show);
