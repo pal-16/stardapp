@@ -5,20 +5,16 @@ const Welcome = (props) => {
   const { show, onCtaClick } = props;
   const [description, setDescription] = useState("");
   const [cta, setCta] = useState("");
-  const [ctaInactive, setCtaInactive] = useState("");
 
   useEffect(() => {
     if (show === 'connect-wallet') {
       setDescription("Connect your wallet now to check out what new content Taylor is putting up!");
       setCta("Connect Wallet");
-      setCtaInactive("");
     } else if (show === 'mint') {
       setDescription("Mint Taylor's `utility NFT` and get exclusive access to her content while truly supporting her!");
-      setCta("Mint Quick NFT");
-      setCtaInactive("Mint Long NFT");
+      setCta("Mint NFT");
     } else if (show === 'empty') {
       setDescription("Taylor has not published any content yet. Maybe support her now?");
-      setCtaInactive("");
       setCta("Donate");
     } else {
       console.error('Invalid show string', show);
@@ -36,8 +32,7 @@ const Welcome = (props) => {
       </div>
       <div className="flex flex-col items-center mt-12 text-center">
         <button onClick={onCtaClick} className="navLink navLink-hover my-[1rem]"> {cta} </button>
-        {ctaInactive && ctaInactive.length > 0 && (<button onClick={() => {alert("We can do this too but let's skip for the sake of the hackathon?")}} className="navLink navLink-hover my-[1rem]"> {ctaInactive} </button>)}
-        <a href="https://github.com/ankitshubham97/dappstar" className="mt-3 text-sm text-indigo-500">Learn More</a>
+        <a href="https://github.com/ankitshubham97/dappstar-app" className="mt-3 text-sm text-indigo-500">Learn More</a>
       </div>
     </div>
   );
