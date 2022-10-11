@@ -1,11 +1,11 @@
 const hre = require("hardhat");
 
 async function main() {
-  const Minter2 = await hre.ethers.getContractFactory("Minter2");
-  console.log(Minter2);
-  const minter2 = await Minter2.deploy();
-  await minter2.deployed();
-  console.log("Minter2 deployed to:", minter2.address);
+  const Minter7 = await hre.ethers.getContractFactory("Minter7");
+  console.log(Minter7);
+  const minter7 = await Minter7.deploy();
+  await minter7.deployed();
+  console.log("Minter7 deployed to:", minter7.address);
 }
 
 main()
