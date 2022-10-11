@@ -38,7 +38,15 @@ class App {
       })
     );
     this.app.use(fileUpload());
-    this.app.use(cors({origin: ['http://localhost:3001', 'https://dappstar-app.vercel.app'], credentials: true}));
+    this.app.use(cors({origin: ['http://localhost:3001',
+    'https://dappstar-app.vercel.app',
+    'http://dappstar-app.vercel.app',
+    'https://dappstar-app.vercel.app/',
+    'http://dappstar-app.vercel.app/',
+    'https://dappstar.vercel.app',
+    'http://dappstar.vercel.app',
+    'https://dappstar.vercel.app/',
+    'http://dappstar.vercel.app/'], credentials: true}));
   }
 
   private initializeControllers(controllers: readonly Controller[]) {
