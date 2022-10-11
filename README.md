@@ -2,12 +2,13 @@
 _Decentralized, temporary & secure access to your favourite content!_
 - - -
 Before we start, if you are the judge/panelist for , here are important quick links:
-1. Live Project: https://dappstar-app.vercel.app/
+1. Live Project: https://dappstar.vercel.app/
 2. Demo: https://youtu.be/
-3. How to interact with the live project: https://github.com/ankitshubham97/dappstar-app#interacting-with-the-live-project
+3. Smart contract code: https://github.com/ankitshubham97/dappstar-app/blob/main/smart-contract/contracts/Minter7.sol
+4. How to interact with the live project: https://github.com/ankitshubham97/dappstar-app#interacting-with-the-live-project
 
 - - -
-# Problems with the current state of creator economy?
+# Inspirations: Problems with the current state of creator economy
 ## Dependency on centralized system
 What if the service on which the creator hosted their content goes down? What if the service decides to ban that particular creator for whatever reason? The creator is helpless before such centralized systems!
 
@@ -16,6 +17,9 @@ It is not new to hear of news that due to certain vulnerabilities in the central
 
 ## No control on monetization
 Creators have no control on monetization because it is solely controlled by the platforms they are on and they deduct heacy platform charges (can go as up as 50%). They have to depend on brand sponsorships and amend their content so that sponsors are happy. This snatches away the freedom from the creators.
+
+## Stuck with access
+May times, a consumer is stuck with subscription that he does not need anymore. Currently, there is no provision for him to solve this problem. But, since we are using NFT as subscription tokens, a user can trade it off at any Coinex NFT marketplace!
 
 - - -
 # Solution: Enters Dappstar 😎
@@ -42,11 +46,13 @@ Access to the content of a creator, say Taylor, is possible only if a person own
 Apart from the royalty generated when a fan mints a creator's NFT, they can also choose to directly tip their favourite creators in CET!
 ### Manage their content and monetization without any central authority
 On top of all this, creators will be in full control of their content (they can add, remove, edit their content) and the monetization (analyze royalties from NFT minting and tips, who minted, who tipped etc)!
+### Gift NFT
+Dappstar believes in gifting. So, there is an option within the platform where NFT holders can gift their NFTs to any address of their frens!
 ### Trading NFT
 The fans can indulge in trading the NFTs which is awesome because it gives them freedom to opt in for new content creators and move away from those who they don't like. It also opens up an opportunity to do core NFT trading.
 - - -
 # Dappstar walkthrough
-The app is live at https://dappstar-app.vercel.app/ and here is the [demo video][demo]. Let's break down the walkthrough into 2 segments:
+The app is live at https://dappstar.vercel.app/ and here is the [demo video][demo]. Let's break down the walkthrough into 2 segments:
 - Creator's perspective
 - Fan's perspective
 
@@ -60,9 +66,26 @@ a. others minting her NFTs.
 b. others tipping/donating her.
 
 ## Fan's perspective
-Let's assume Ankit is one of those top fans of Taylor. He came to know that if he mints Taylor's NFT on Dappstar, he would be able to watch her content and support her as well. He just goes to the platform at https://dappstar-app.vercel.app/, connects his wallet and then since he does not own any of her NFTs, he sees an option to mint. He mints, pays the fee and reconnects his wallet. Voila! He is able to see her content. He also sees option to tip her and he usually tips when he finds some content to be too good!
+Let's assume Ankit is one of those top fans of Taylor. He came to know that if he mints Taylor's NFT on Dappstar, he would be able to watch her content and support her as well. He just goes to the platform at https://dappstar.vercel.app/, connects his wallet and then since he does not own any of her NFTs, he sees an option to mint. He mints, pays the fee and reconnects his wallet. Voila! He is able to see her content. He also sees option to tip her and he usually tips when he finds some content to be too good!
+He also has the option to gift the NFTs that he owns to his frens!
 Further, he can buy-and-sell these NFTs as per his wish! Or just keep them as souvenirs!
+In short he could do following (but not restricted to these):
+1. Explore the private content
+2. View the NFTs that you own
+3. Gift NFT to some other address
+4. Donate some CETs to the creator
+5. Trade the NFTs
+
 - - -
+
+## Project architecture
+The project consists of 3 parts: back end, front end and the smart contract.
+### Back end
+Back end is deployed at https://dappstar-backend.herokuapp.com/. It is written in NodeJS and acts like an API server for its front end requests. The project required a data store where we are using IPFS (via Chainlink).
+### Front end
+Front end is written with the help of ReactJS and Tailwindcss.
+### Smart contract
+Smart contract is written in Solidity using Hardhat as the development environment. It is deployed on Coinex [testnet][chain] at [0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C][nft-contract-address]
 
 ## Deep diving into the implementation of the token gating
 Let's try to understand how it all works by going through the journey!
@@ -72,24 +95,57 @@ Let's try to understand how it all works by going through the journey!
 4. Let's say the access token expires after an hour. The client can again get a new access token until the wallet holds the NFT!
 
 ## Deep diving into the implementation of the content encryption and storage on IPFS
-1. The creator goes to https://dappstar-app.vercel.app/ and connects her wallet.
+1. The creator goes to https://dappstar.vercel.app/ and connects her wallet.
 2. She sees an option to `manage` her content where she can `Add files`. She proceeds to upload a new file.
 3. Dappstar encrypts the file with the creator's key and uploads to IPFS via Chainlink. (Chainlink provides a nice AWS-S3-like interface, so its easier for Dappstar to manage files.)
 4. Even though distributed, the content is secure (because of encryption) and highly available (multiple IPFS nodes hosting the content)
 5. When a fan with NFT tries to access a content, Dappstar verifies he really does hold NFT. After verification, Dappstar loads the encrypted file from IPFS, decrypts it using the creator's key and delivers to the fan.
 
 ## Deep diving into the implementation of the smart contract
-### d
+Smart contract code: https://github.com/ankitshubham97/dappstar-app/blob/main/smart-contract/contracts/Minter7.sol
+Smart contract deployed on [testnet][chain] at [0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C][nft-contract-address]
+
+Smart contract is created by the creator and put on chain.
+1. `mint function`: If a person wants to mint an NFT, he can do it via mint function. It requires certain mint fee (currently set to at least 1 CET). On a successful mint, the creator is transferred the mint fee to their address which they used to create the smart contract. And of course, the new NFT gets available to the minter's address. Following is the mint function:
+```
+function mint(string memory tokenURI) public payable {
+    require(mintPrice <= msg.value, "Not enough CET sent.");
+    
+    uint256 tokenId = _tokenIdCounter.current();
+    _tokenIdCounter.increment();
+    
+    payable(owner()).transfer(msg.value);
+    addressToAmountMint[msg.sender] += msg.value;
+    _safeMint(msg.sender, tokenId);
+    _setTokenURI(tokenId, tokenURI);
+}
+```
+2. `donate function`: If a person wants to donate some CET, he would use thi function. This transfers the donated amount to the creator's address which they used to create the smart contract.
+```
+function donate() public payable {
+    payable(owner()).transfer(msg.value);
+    addressToAmountDonate[msg.sender] += msg.value;
+}
+```
+3. `Mapping of who minted/donated`: The smart contract has two mappings, each to keep track of who all have minted and donated till date.
+```
+mapping(address => uint256) public addressToAmountMint;
+mapping(address => uint256) public addressToAmountDonate;
+```
 
 ## Some negative user flows:
+**User tries toview without connecting the wallet**
+He won't be able to get the access token itself. Access token is required to request the protected resource.
+
 **User tries to connect a random wallet with no NFT**
 He won't be able to get the access token because the wallet must be containing the NFT!
 
-<to write more>
-  
+**User tries to connect a wallet with NFT but trades it off afterwards**
+Access token expire after an hour. So, he won't be able to get the subsequent access token since he does not own the NFT anymore!
+
 - - -
 # Interacting with the live project
-The project is running live on https://dappstar-app.vercel.app/
+The project is running live on https://dappstar.vercel.app/
 [The smart contract is deployed on Coinex testnet.][nft-contract-address]
 
 ## Coinex testnet network details (for metamask):
@@ -112,23 +168,14 @@ If you want to interact with the live app, you would need a Metamask wallet swit
 ## Checking unhappy path
 
 To check the unhappy path, you could just use any random wallet to connect to the app.
-
-## Extras
-You could also check out these:
-1. Use creator's wallet and explore adding/deleting content
-2. Use creator's wallet and view revenues
-3. Use fan's wallet and explore the private content
-4. Use fan's wallet and view the NFTs that you own
-5. Use fan's wallet and gift NFT to some other address
-6. Use fan's wallet and donate some CETs to the creator
-
 - - -
 
 # Future
-<To write>
+This project aims to solve the obvious problems of creator economy(CE) viz centralization of access to creator's data by centralized authorities, content leaks, little-to-no control of creators on the monetization of their content, inability for consumers to trade the subscription etc. We aim to build a product which resolves these problems while polishing it so that it could be adopted by masses. We are still doing some market research mainly around how to provide these services (will it make sense to whitelabel this and ship to creators or host it as SAAS), business value, market cap, rate of adoption etc.
 
 [chain]: <https://testnet.coinex.net/>
 [nft-contract-address]: <https://testnet.coinex.net/address/0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C>
 [CET]: <https://www.coinex.com/token>
 [demo]: <https://youtu.be>
+[quick-nft]: <https://github.com/ankitshubham97/dappstar#quick-nfts>
 [cid]: <https://docs.ipfs.tech/concepts/content-addressing/>
