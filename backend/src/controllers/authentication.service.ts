@@ -6,25 +6,21 @@ import GetTokenResponse, {
 import JwtAccessTokenPayload from '../interfaces/jwtAccessTokenPayload';
 import { ethers } from 'ethers';
 import Web3 from 'web3';
-import { AbiItem } from 'web3-utils';
 import jwt from 'jsonwebtoken';
 import axios, { ResponseType } from 'axios';
 
-async function doesWalletOwnNft({walletPublicAddress, nftContractAddress}:{walletPublicAddress: string, nftContractAddress: string}): Promise<boolean> {
+async function doesWalletOwnNft({walletPublicAddress}:{walletPublicAddress: string}): Promise<boolean> {
   const resp = await axios({
     method: 'get',
-    url: `https://testnet.coinex.net/api/v1/addresses/${walletPublicAddress}/tokens`,
+    url: `https://th-api.klaytnapi.com/v2/contract/nft/${process.env.NFT_CONTRACT_ADDRESS}/owner/${walletPublicAddress}`,
     headers: { 
       'Content-Type': 'application/json',
-      'apikey': process.env.COINEX_API_KEY ?? ''
+      'x-chain-id': '1001',
+      'Authorization': `Basic ${process.env.KLAYTN_BASIC_AUTH_TOKEN}`
     },
   });
-  const items = resp.data.data.crc721 as any[];
-  if (items && items?.length > 0) {
-    // Check if the wallet has the correct NFT
-    return items.filter(i => i.token_info.contract === nftContractAddress && Number(i.balance) >= 1)?.length > 0
-  }
-  return false;
+  const { items } = resp.data;
+  return items && items?.length > 0;
 }
 
 export async function getContractDetails({nftContractAddress}: {nftContractAddress: string}): Promise<any> {
@@ -39,8 +35,8 @@ export async function getContractDetails({nftContractAddress}: {nftContractAddre
   return resp.data;
 }
 
-async function didWalletCreateNft({walletPublicAddress, nftContractAddress}:{walletPublicAddress: string, nftContractAddress: string}): Promise<boolean> {
-  const respData = await getContractDetails({nftContractAddress});
+async function didWalletCreateNft({walletPublicAddress}:{walletPublicAddress: string}): Promise<boolean> {
+  const respData = await getContractDetails({nftContractAddress: `${process.env.NFT_CONTRACT_ADDRESS}`});
   const creator = respData.data.creator_info.creator as string;
   if (creator && creator?.length > 0) {
     // Check if the wallet has the correct NFT
@@ -66,31 +62,14 @@ export { JwtAccessTokenPayload };
 export default function AuthNft() {
   let _secret: string;
   let _web3: Web3;
-  let _deployedContractAddress: string;
-  let _deployedContractAbi: AbiItem[];
 
   return {
     init: function ({
       secret,
-      networkEndpoint,
-      deployedContractAddress,
-      deployedContractAbi,
     }: {
       secret: string;
-      networkEndpoint: string;
-      deployedContractAddress: string;
-      deployedContractAbi: AbiItem[];
     }) {
       _secret = secret;
-      _deployedContractAddress = deployedContractAddress;
-      _deployedContractAbi = deployedContractAbi;
-      _web3 = new Web3(networkEndpoint);
-    },
-    getDeployedContractAddress: function () {
-      return _deployedContractAddress;
-    },
-    getDeployedContractAbi: function () {
-      return _deployedContractAbi;
     },
     getToken: async function (
       getTokenRequest: GetTokenRequest
@@ -99,7 +78,6 @@ export default function AuthNft() {
         nonce,
         signature,
         walletPublicAddress,
-        nftContractAddress,
         nftId,
       } = getTokenRequest;
       try {
@@ -115,13 +93,12 @@ export default function AuthNft() {
           };
         }
         // Check if the wallet created the NFT and give write access.
-        if (await didWalletCreateNft({walletPublicAddress, nftContractAddress})) {
+        if (await didWalletCreateNft({walletPublicAddress})) {
           const accessLevel = 'write';
           return {
             data: {
               accessToken: createToken(_secret, getTokenRequest, accessLevel),
               walletPublicAddress,
-              nftContractAddress,
               accessLevel,
               nftId,
               iat: Date.now(),
@@ -131,13 +108,12 @@ export default function AuthNft() {
           };
         }
         // Check if the wallet owns the NFT and give read-only access.
-        if (await doesWalletOwnNft({walletPublicAddress, nftContractAddress})) {
+        if (await doesWalletOwnNft({walletPublicAddress})) {
           const accessLevel = 'read';
           return {
             data: {
               accessToken: createToken(_secret, getTokenRequest, accessLevel),
               walletPublicAddress,
-              nftContractAddress,
               accessLevel,
               nftId,
               iat: Date.now(),

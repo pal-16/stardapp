@@ -6,7 +6,6 @@ interface GetTokenResponse {
 export interface GetTokenResponseSuccess {
   accessToken: string;
   walletPublicAddress: string;
-  nftContractAddress: string;
   accessLevel: 'read' | 'write'
   nftId: string;
   iat: number;

@@ -16,16 +16,8 @@ import {
   cryptFileWithSalt,
   listFilesByBucket,
   getRandomInt,
-  getTmpAccessArseedFile,
-  isTtlFileUriRigged,
 } from "../utils";
 
-import {
-  ARSEEDING_URL,
-  deployedContractAbi,
-  deployedContractAddress,
-  networkEndpoint,
-} from '../constants';
 import { uniqueNamesGenerator, Config, starWars, languages, colors, adjectives  } from 'unique-names-generator';
 import { Readable } from 'stream';
 
@@ -34,9 +26,6 @@ class AuthenticationController implements Controller {
   public authnft = AuthNft();
   public _ = this.authnft.init({
     secret: process.env.JWT_SECRET ?? '',
-    networkEndpoint,
-    deployedContractAddress,
-    deployedContractAbi,
   });
 
   public CHAINSAFE_BUCKET_URL = process.env.CHAINSAFE_BUCKET_URL ?? '';
@@ -72,6 +61,7 @@ class AuthenticationController implements Controller {
     this.router.post('/list', readAuthMiddleware, this.listFiles); 
     this.router.get('/contract/:nftContractAddress', this.getContractDetails); 
     this.router.get('/token-uri/', this.generateTokenUri); 
+    this.router.post(`/get-nfts/`, this.getNfts);
   }
 
   private displayWelcomeMessage = async (
@@ -85,17 +75,8 @@ class AuthenticationController implements Controller {
     request: express.Request,
     response: express.Response
   ) => {
-    const { nonce, signature, walletPublicAddress, nftContractAddress, nftId, ttlFileUri } =
+    const { nonce, signature, walletPublicAddress, nftContractAddress, nftId } =
       request.body;
-    const res = await axios.get(`${ttlFileUri}`);
-    if (!(res.data && res.status === 200)) {
-      response.status(400).send('Temporary access expired');
-      return;
-    }
-    if (await isTtlFileUriRigged(ttlFileUri)) {
-      response.status(400).send(`Bad ttlFileUri ${ttlFileUri}`);
-      return;
-    }
     const tokenResponse = await this.authnft.getToken({
       nonce,
       signature,
@@ -325,8 +306,6 @@ class AuthenticationController implements Controller {
   ) => {
     const title: string = uniqueNamesGenerator(this.nameGeneratorConfig);
     const description = `Proud owner of Taylor's utility NFT!`;
-    const arseedFileId = await getTmpAccessArseedFile();
-    const ttlFileUri = `${ARSEEDING_URL}/${arseedFileId.itemId}`;
     const {data, error} = await listFilesByBucket({chainsafeBucketUrl: this.CHAINSAFE_NFT_ART_BUCKET_URL});
     if (error) {
       response.sendStatus(400);
@@ -342,7 +321,6 @@ class AuthenticationController implements Controller {
       title,
       description,
       image: `https://ipfs.io/ipfs/${randomFile.cid}`,
-      ttlFileUri
     }));
     const filename = `token_uri_${Date.now()}.json`;
     let formdata = new FormData();
@@ -377,8 +355,30 @@ class AuthenticationController implements Controller {
       response.sendStatus(400);
       return;
     }
-    response.send({tokenUri: `https://ipfs.io/ipfs/${cid}`, ttlFileUri});
+    response.send({tokenUri: `https://ipfs.io/ipfs/${cid}`});
   };
+
+  private getNfts= async (
+    request: express.Request,
+    response: express.Response
+  ) => {
+    try {
+      const { account } = request.body;
+      const resp = await axios({
+        method: 'get',
+        url: `https://th-api.klaytnapi.com/v2/contract/nft/${process.env.NFT_CONTRACT_ADDRESS}/owner/${account}`,
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-chain-id': '1001',
+          'Authorization': `Basic ${process.env.KLAYTN_BASIC_AUTH_TOKEN}`
+        },
+      });
+      response.send(resp.data?.items);
+      return;
+    } catch (error) {
+      response.sendStatus(400);
+    }
+  }
 }
 
 export default AuthenticationController;
