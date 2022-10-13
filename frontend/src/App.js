@@ -7,12 +7,12 @@ import { generateTokenUri, getContent, listContents } from "./utils/rest";
 import { ethers } from 'ethers';
 import { useCookies } from "react-cookie";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Minter7 from './artifacts/contracts/Minter7.sol/Minter7.json';
+import TaylorKlay from './artifacts/contracts/TaylorKlay.sol/TaylorKlay.json';
 import Sidebar from "./components/Sidebar";
 import SingleFileView from "./components/SingleFileView";
 import TokensView from "./components/TokensView";
 import Welcome from "./components/Welcome";
-import { MINT_PRICE, NEXT_PUBLIC_MINTER_ADDRESS } from "./constants";
+import { MINT_PRICE, NFT_CONTRACT_ADDRESS } from "./constants";
 import { connectWallet, disconnectWallet, hasEthereum } from "./utils/connectWallet";
 import { getAccessToken, removeAccessToken } from "./utils/rest";
 
@@ -39,9 +39,9 @@ const App = () => {
     const { address, message, signature} = await connectWallet();
     localStorage.setItem('address', address);
     setAccount(address);
-    const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address, ttlFileUri: localStorage.getItem('ttlFileUri')});
+    const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address});
     if (error) {
-      alert("Could not get access token. Make sure you have either minted a Long-NFT or a Quick-NFT in the last 24 hours!");
+      alert("Could not get access token. Make sure you have minted a TaylorKlay NFT!");
       setError(error);
     }
     if (accessToken) {
@@ -84,21 +84,20 @@ const App = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner()
 
-      const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+      const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, TaylorKlay.abi, signer)
       const { data, error } = await generateTokenUri();
       if (error) {
         console.error(error);
         return;
       }
-      const { tokenUri, ttlFileUri } = data;
-      localStorage.setItem('ttlFileUri', ttlFileUri);
+      const { tokenUri } = data;
       if (!tokenUri) {
         const msg = `Could not find tokenUri`;
         console.error(msg);
         alert(msg);
         return;
       }
-      const transaction = await contract.mint(tokenUri, { value: ethers.utils.parseEther(MINT_PRICE.toString()) })
+      const transaction = await contract.mintNFT(tokenUri, { value: ethers.utils.parseEther(MINT_PRICE.toString()) })
       await transaction.wait()
 
     } catch(error) {

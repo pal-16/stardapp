@@ -1,8 +1,6 @@
-export const API_BASE_URL = "https://dappstar-app-backend.herokuapp.com";
-// export const API_BASE_URL = "http://localhost:3000";
-export const STRING_NONCE = "msg";
-export const PACKED_NONCE = "05013132366437333637";
-export const NFT_CONTRACT_ADDRESS = "0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C";
-export const NEXT_PUBLIC_MINTER_ADDRESS="0x476eaA416e7f2DaE54600d86c657c41F4081Ff9C";
+// export const API_BASE_URL = "https://stardapp-backend.herokuapp.com";
+export const API_BASE_URL = "http://localhost:3000";
+export const NFT_CONTRACT_ADDRESS = "0x23278452a4847B5fc6dD23A49fc6Aa70F9226fBb";
 export const MINT_PRICE = 1;
 export const COINEX_TESTNET_EXPLORER="https://testnet.coinex.net";
+export const KLAYTN_TESTNET_EXPLORER="https://baobab.scope.klaytn.com";

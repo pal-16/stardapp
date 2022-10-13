@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { COINEX_TESTNET_EXPLORER } from "../constants";
-import { getNftsForAccount } from "../utils/connectWallet";
+import { KLAYTN_TESTNET_EXPLORER } from "../constants";
+import { getNftMetadataForAccount } from "../utils/connectWallet";
 import { SendIcon } from "./sendIcon";
 import SendNft from "./SendNft";
 import { ViewIcon } from "./viewIcon";
@@ -14,7 +14,7 @@ const TokensView = (props) => {
   useEffect(() => {
     const address = localStorage.getItem('address');
     if (address && !['', 'undefined'].includes(address)) {
-      (getNftsForAccount(address)).then(resp => {
+      (getNftMetadataForAccount(address)).then(resp => {
         setNfts(resp);
       });
     }
@@ -67,7 +67,7 @@ const TokensView = (props) => {
                     </td>
                     <td className="p-0 text-center">
                       <div className="flex item-center justify-center">
-                        <a href={`${COINEX_TESTNET_EXPLORER}/token/${nft.nftContractAddress}?a=${nft.nftId}`} target="_blank">
+                        <a href={`${KLAYTN_TESTNET_EXPLORER}/nft/${nft.nftContractAddress}/${nft.nftId}`} target="_blank">
                           <div className="w-8 mr-2 transform hover:text-[#FF9494] hover:scale-110" data-bs-toggle="tooltip" title="View this NFT">
                             <ViewIcon />
                           </div>

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { ethers } from 'ethers';
-import Minter7 from '../artifacts/contracts/Minter7.sol/Minter7.json';
-import { NEXT_PUBLIC_MINTER_ADDRESS } from '../constants';
+import TaylorKlay from '../artifacts/contracts/TaylorKlay.sol/TaylorKlay.json';
+import { NFT_CONTRACT_ADDRESS } from '../constants';
+import {getNftsForAccountRest} from './rest';
 
 // Check for MetaMask wallet browser extension
 export const hasEthereum = () => {
@@ -38,13 +39,28 @@ export const getNftsForAccount = async (account) => {
   const nfts = [];
   if(!hasEthereum()) return nfts;
   try {
+    const { data, error} = await getNftsForAccountRest({account});
+    return data;
+  } catch(error) {
+    console.error(error);
+    alert(error.data?.message ?? 'Something went wrong!');
+  }
+  return nfts;
+}
+
+export const getNftMetadataForAccount = async (account) => {
+  const nfts = [];
+  if(!hasEthereum()) return nfts;
+  try {
+    const nftsList = await getNftsForAccount(account);
+
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
-    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+    const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, TaylorKlay.abi, signer)
     const balance = await contract.balanceOf(account);
-    for(let i = 0; i < balance.toNumber(); i++) {
-      const tokenId = (await contract.tokenOfOwnerByIndex(account, i)).toNumber();
-      const tokenUri = await contract.tokenURI(tokenId);
+    for(let i = 0; i < nftsList.length; i++) {
+      const tokenId = Number(nftsList[i].tokenId);
+      const tokenUri = await contract.tokenIdToTokenUri(tokenId);
       const content = (await axios.get(tokenUri)).data;
       nfts.push({...content, nftId: tokenId, nftContractAddress: contract.address });
     }
@@ -60,8 +76,8 @@ export const sendNft = async (account, nftId) => {
   try {    
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
-    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
-    const transaction = await contract["safeTransferFrom(address,address,uint256)"](localStorage.getItem("address") /* from */, account /* to */, nftId);
+    const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, TaylorKlay.abi, signer)
+    const transaction = await contract.transferFrom(localStorage.getItem("address") /* from */, account /* to */, 0x0);
     await transaction.wait()
   } catch(error) {
     console.error(error);
@@ -77,10 +93,21 @@ export const getMonetizationInfo = async () => {
     const signer = provider.getSigner()
 
     const address = await signer.getAddress()
-    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+    const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, TaylorKlay.abi, signer)
     const owners = new Set();
-    const totalSupply = await contract.totalSupply();
-    for (let i=0; i<totalSupply; i++) {
+    // const tokenIdCounter = await contract.tokenIdCounter();
+    // console.log('tokenIdCounter', tokenIdCounter);
+    const tokenUri = await contract.tokenURI(0);
+    console.log('tokenUri', String(tokenUri.toString()));
+    const tokenIdToTokenUri = await contract.tokenIdToTokenUri(0);
+    console.log('tokenIdToTokenUri', String(tokenIdToTokenUri.toString()));
+    const balance = await contract.balanceOf("0x5d905Cd5734A457139bc04c77CAAf3DFCBf0bA33");
+    console.log('balance', balance);
+    const symbol = await contract.symbol();
+    console.log('symbol', symbol);
+    console.log(contract);
+    const tokenIdCounter = await contract.tokenIdCounter();
+    for (let i=0; i<tokenIdCounter; i++) {
       owners.add(await contract.ownerOf(i))
     }
     for (const owner of owners) {
@@ -113,7 +140,7 @@ export const sendCet = async ({amountInCet}) => {
     const signer = provider.getSigner()
 
     const address = await signer.getAddress()
-    const contract = new ethers.Contract(NEXT_PUBLIC_MINTER_ADDRESS, Minter7.abi, signer)
+    const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, TaylorKlay.abi, signer)
     const transaction = await contract.donate( { value: ethers.utils.parseEther(amountInCet) })
 
     await transaction.wait()

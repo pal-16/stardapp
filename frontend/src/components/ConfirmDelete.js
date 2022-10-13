@@ -1,8 +1,5 @@
-import axios from 'axios';
-
-import React,{Component} from 'react';
-import { API_BASE_URL, PACKED_NONCE } from '../constants';
-import { useState, useEffect } from "react";
+import React from 'react';
+import { useState } from "react";
 import { extractNameFromEncryptedFileName } from '../utils/manipulator';
 import { deleteContent } from '../utils/rest';
 
