@@ -30,7 +30,7 @@ const MonetizationView = (props) => {
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-3xl leading-normal">
                   <th className="py-3 px-6 text-left">Address</th>
-                  <th className="py-3 px-6 text-left">Revenue (in CET)</th>
+                  <th className="py-3 px-6 text-left">Revenue (in KLAY)</th>
                   <th className="py-3 px-6 text-left">Source</th>
                 </tr>
               </thead>

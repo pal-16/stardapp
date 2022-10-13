@@ -12,7 +12,7 @@ contract TaylorKlay is KIP17, Ownable {
     
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
-    uint256 public mintPrice = 1000000000000000000; // 1 CET.
+    uint256 public mintPrice = 1000000000000000000; // 1 KLAY.
     mapping(address => uint256) public addressToAmountMint;
     mapping(address => uint256) public addressToAmountDonate;
 

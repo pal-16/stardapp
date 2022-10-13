@@ -25,7 +25,7 @@ const Navbar = (props) => {
   return (
     <header className="navbar">
       <Link to={`/`}>
-        <img src="../logo.png" alt="logo" className="h-28"/>
+        <img src="../logo.png" alt="logo" className="h-16"/>
       </Link>  
     <div>
       {(() => {
@@ -41,25 +41,25 @@ const Navbar = (props) => {
           <img src="/expand-arrow-icon.svg" className="w-[2rem]" />
         </button>
         <div className='absolute top-[4rem] z-10 right-10
-        after:content-[""] after:inline-block after:absolute after:top-0 after:bg-white/40
+        after:content-[""] after:inline-block after:absolute after:top-0 after:bg-[#FFCACA]/30
         after:w-full after:h-full after:-z-20 after:blur-[2px] after:rounded-lg
         peer-focus:top-[4rem] peer-focus:opacity-100 peer-focus:visible 
         transition-all duration-300 invisible  opacity-0 
         '>
           <ul className='py-6 px-3 flex flex-col gap-3'>
               <Link to={`manage`} state={{account}}>
-              <li className='cursor-pointer bg-[#FF9494] p-3 rounded-md hover:opacity-90 text-white'>
+              <li className='cursor-pointer bg-[#372948] p-3 rounded-md hover:opacity-90 text-[#FFCACA]'>
                 Manage
                 </li>            
               </Link>
               {localStorage.getItem('accessLevel') === 'write' ? (
                 <Link to={`admin/files`}>
-                <li className='cursor-pointer bg-[#FF9494] p-3 rounded-md hover:opacity-90 text-white'>
+                <li className='cursor-pointer bg-[#372948] p-3 rounded-md hover:opacity-90 text-[#FFCACA]'>
                   Content
                   </li>            
                 </Link>
               ): <></>}
-            <li onClick={ondisconnectWallet} className='cursor-pointer bg-[#FF0000] p-3 rounded-md hover:opacity-90 text-white'>
+            <li onClick={ondisconnectWallet} className='cursor-pointer bg-[#FF0000] p-3 rounded-md hover:opacity-90 text-[#FFCACA]'>
               Disconnect
             </li>
           </ul>

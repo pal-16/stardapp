@@ -133,7 +133,7 @@ export const getContractBalance = async (nftContractAddress) => {
   }
 }
 
-export const sendCet = async ({amountInCet}) => {
+export const sendKlay = async ({amountInKlay}) => {
   if(!hasEthereum()) return
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -141,7 +141,7 @@ export const sendCet = async ({amountInCet}) => {
 
     const address = await signer.getAddress()
     const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, TaylorKlay.abi, signer)
-    const transaction = await contract.donate( { value: ethers.utils.parseEther(amountInCet) })
+    const transaction = await contract.donate( { value: ethers.utils.parseEther(amountInKlay) })
 
     await transaction.wait()
   } catch(error) {
