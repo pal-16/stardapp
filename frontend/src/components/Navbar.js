@@ -56,13 +56,13 @@ const Navbar = (props) => {
           <ul className='py-6 px-3 flex flex-col gap-3'>
               <Link to={`manage`} state={{account}}>
               <li className='cursor-pointer bg-[#372948] p-3 rounded-md hover:opacity-90 text-[#FFCACA]'>
-                Manage
+                Manage NFTs
                 </li>            
               </Link>
               {localStorage.getItem('accessLevel') === 'write' ? (
                 <Link to={`admin/files`}>
                 <li className='cursor-pointer bg-[#372948] p-3 rounded-md hover:opacity-90 text-[#FFCACA]'>
-                  Content
+                  Manage Content
                   </li>            
                 </Link>
               ): <></>}
