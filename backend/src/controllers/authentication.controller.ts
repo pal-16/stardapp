@@ -61,7 +61,8 @@ class AuthenticationController implements Controller {
     this.router.post('/list', readAuthMiddleware, this.listFiles); 
     this.router.get('/contract/:nftContractAddress', this.getContractDetails); 
     this.router.get('/token-uri/', this.generateTokenUri); 
-    this.router.post(`/get-nfts/`, this.getNfts);
+    this.router.post(`/get-nfts/`, readAuthMiddleware, this.getNfts);
+    this.router.post(`/get-klay-balance/`, readAuthMiddleware,this.getKlayBalance);
   }
 
   private displayWelcomeMessage = async (
@@ -374,6 +375,27 @@ class AuthenticationController implements Controller {
         },
       });
       response.send(resp.data?.items);
+      return;
+    } catch (error) {
+      response.sendStatus(400);
+    }
+  }
+
+  private getKlayBalance= async (
+    request: express.Request,
+    response: express.Response
+  ) => {
+    try {
+      const { account } = request.body;
+      const resp = await axios({
+        method: 'get',
+        url: `https://api-eu1.tatum.io/v3/klaytn/account/balance/${account}`,
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-api-key': `${process.env.TATUM_API_KEY}`,
+        },
+      });
+      response.send(resp.data?.balance);
       return;
     } catch (error) {
       response.sendStatus(400);

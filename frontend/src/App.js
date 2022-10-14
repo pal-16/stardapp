@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import Navbar from "./components/Navbar";
 import Showcase from "./components/showcase";
-import { generateTokenUri, getContent, listContents } from "./utils/rest";
+import { generateTokenUri, getContent, getKlayBalance, listContents } from "./utils/rest";
 
 import { ethers } from 'ethers';
 import { useCookies } from "react-cookie";
@@ -22,6 +22,7 @@ const App = () => {
   const [content, setContent] = useState(null);
   const [error, setError] = useState(null);
   const [accessToken, setAccessToken] = useState("");
+  const [balance, setBalance] = useState("0");
   const [rerender, setRerender] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [openManageTokensScreen, setOpenManageTokensScreen] = useState(false);
@@ -31,7 +32,17 @@ const App = () => {
   useEffect(() => {
     if (!loading) {
       setLoading(true);
-      onGetContent()
+      const address = localStorage.getItem('address');
+      getKlayBalance({account: address}).then(res => {
+        const data = res.data;
+        const error = res.error;
+        if (error) {
+          setBalance("0");
+        } else {
+          setBalance(data ?? '0');
+        }
+      })
+      onGetContent();
     }
   }, []);
 
@@ -39,6 +50,7 @@ const App = () => {
     const { address, message, signature} = await connectWallet();
     localStorage.setItem('address', address);
     setAccount(address);
+
     const {accessToken, accessLevel, error} = await getAccessToken({signature, walletPublicAddress:address});
     if (error) {
       alert("Could not get access token. Make sure you have minted a TaylorKlay NFT!");
@@ -47,6 +59,12 @@ const App = () => {
     if (accessToken) {
       localStorage.setItem('accessLevel', accessLevel);
       setAccessToken(accessToken);
+      const { data, error:error2 } = await getKlayBalance({account: address});
+      if (error2) {
+        setBalance("0");
+      } else {
+        setBalance(data ?? '0');
+      }
       await onGetContent()
     }
   };
@@ -124,6 +142,7 @@ const App = () => {
           onConnectWallet={onConnectWallet}
           ondisconnectWallet={ondisconnectWallet}
           setOpenManageTokensScreen={setOpenManageTokensScreen}
+          balance={balance}
         />
         <Routes>
           <Route path="/" element={

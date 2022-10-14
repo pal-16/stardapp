@@ -12,7 +12,8 @@ const Navbar = (props) => {
     onConnectWallet,
     ondisconnectWallet,
     setOpenManageTokensScreen,
-    getNftsForAccount
+    getNftsForAccount,
+    balance
   } = props;
 
   useEffect(() => {
@@ -34,6 +35,12 @@ const Navbar = (props) => {
           return <button className="navLink" disabled>Connected to {publicAddr}</button>;
         }
         return <button onClick={onConnectWallet} className="navLink navLink-hover"> Connect Wallet </button>;
+      })()}
+      {(() => {
+        const publicAddr = account;
+        if (publicAddr && publicAddr !== "" && balance && !["0", ""].includes(balance)) {
+          return <button className="navLink" disabled>Balance: {balance} KLAY</button>;
+        }
       })()}
       {account && account !== "" &&
       (<div className='navLink dropdown inline-block '>

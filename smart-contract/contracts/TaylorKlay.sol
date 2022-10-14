@@ -10,18 +10,18 @@ import "@klaytn/contracts/utils/Counters.sol";
 
 contract TaylorKlay is KIP17, Ownable {
     
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIdCounter;
-    uint256 public mintPrice = 1000000000000000000; // 1 KLAY.
-    mapping(address => uint256) public addressToAmountMint;
-    mapping(address => uint256) public addressToAmountDonate;
+  using Counters for Counters.Counter;
+  Counters.Counter private _tokenIdCounter;
+  uint256 public mintPrice = 1000000000000000000; // 1 KLAY.
+  mapping(address => uint256) public addressToAmountMint;
+  mapping(address => uint256) public addressToAmountDonate;
 
-    mapping (uint256 => string) private _tokenURIs;
+  mapping (uint256 => string) private _tokenURIs;
 
-    constructor() KIP17("TaylorKlay", "TAYLORKLAY") {}
+  constructor() KIP17("TaylorKlay", "TAYLORKLAY") {}
 
-    function setMintPrice(uint256 newMintPrice) public onlyOwner {
-      mintPrice = newMintPrice;
+  function setMintPrice(uint256 newMintPrice) public onlyOwner {
+    mintPrice = newMintPrice;
   }
 
   function donate() public payable {
@@ -44,11 +44,11 @@ contract TaylorKlay is KIP17, Ownable {
   }
 
   function _setTokenURI(uint256 tokenId, string memory uri) internal {
-      require(
-          _exists(tokenId),
-          'KIP17Metadata: URI set of nonexistent token'
-      );
-      _tokenURIs[tokenId] = uri;
+    require(
+      _exists(tokenId),
+      'KIP17Metadata: URI set of nonexistent token'
+    );
+    _tokenURIs[tokenId] = uri;
   }
 }
 

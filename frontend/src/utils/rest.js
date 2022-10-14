@@ -141,3 +141,20 @@ export const getNftsForAccountRest = async ({account}) => {
   }
 }
 
+export const getKlayBalance = async ({account}) => {
+  try {
+    const res = await axios.post(
+      `${API_BASE_URL}/get-klay-balance/`,
+      {
+        account
+      },
+      {
+        withCredentials: true
+      }
+    );
+    return { data: res.data, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+}
+
