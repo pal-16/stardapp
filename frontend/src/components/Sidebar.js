@@ -18,14 +18,14 @@ const Sidebar = (props) => {
   
   return (
     <div className="flex w-full h-screen mt-[8rem] text-2xl">
-      <aside className="flex w-72 flex-col space-y-2 border-r-2 border-gray-200 bg-[#372948] p-2"
+      <aside className="flex w-72 flex-col space-y-2 border-r-2 border-[#372948] p-2"
         >
-        <Link to="/admin/files" className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600">
+        <Link to="/admin/files" className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-[#372948]/[0.9] hover:text-[#FFECEF]">
           <span><i className="bx bx-file"></i></span>
           <span>Files</span>
         </Link>
 
-        <Link to="/admin/monetization" className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-gray-100 hover:text-blue-600">
+        <Link to="/admin/monetization" className="flex items-center space-x-1 rounded-md px-2 py-3 hover:bg-[#372948]/[0.9] hover:text-[#FFECEF]">
           <span><i className="bx bx-dollar"></i></span>
           <span>Monetization</span>
         </Link>
