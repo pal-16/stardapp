@@ -3,7 +3,7 @@ _Decentralized, private & secure access to your favourite content!_
 - - -
 Before we start, if you are the judge/panelist for Klaymakers 2022, here are important quick links:
 1. Live Project: https://stardapp.vercel.app/
-2. Demo: 
+2. Demo: https://www.youtube.com/watch?v=PNMD0IsNxro
 3. Smart contract code: https://github.com/ankitshubham97/stardapp/blob/main/smart-contract/contracts/TaylorKlay.sol
 4. How to interact with the live project: https://github.com/ankitshubham97/stardapp#interacting-with-the-live-project
 
@@ -169,5 +169,5 @@ This project aims to solve the obvious problems of creator economy(CE) viz centr
 
 [chain]: <https://baobab.scope.klaytn.com/>
 [nft-contract-address]: <https://baobab.scope.klaytn.com/account/0x23278452a4847b5fc6dd23a49fc6aa70f9226fbb>
-[demo]: <>
+[demo]: <https://www.youtube.com/watch?v=PNMD0IsNxro>
 [cid]: <https://docs.ipfs.tech/concepts/content-addressing/>
