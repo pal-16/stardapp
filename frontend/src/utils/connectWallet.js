@@ -77,7 +77,7 @@ export const sendNft = async (account, nftId) => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner()
     const contract = new ethers.Contract(NFT_CONTRACT_ADDRESS, TaylorKlay.abi, signer)
-    const transaction = await contract.transferFrom(localStorage.getItem("address") /* from */, account /* to */, 0x0);
+    const transaction = await contract.transferFrom(localStorage.getItem("address") /* from */, account /* to */, nftId);
     await transaction.wait()
   } catch(error) {
     console.error(error);
