@@ -6,6 +6,7 @@ Before we start, if you are the judge/panelist for Klaymakers 2022, here are imp
 2. Demo: https://www.youtube.com/watch?v=PNMD0IsNxro
 3. Smart contract code: https://github.com/ankitshubham97/stardapp/blob/main/smart-contract/contracts/TaylorKlay.sol
 4. How to interact with the live project: https://github.com/ankitshubham97/stardapp#interacting-with-the-live-project
+5. Applicable track and bounty: https://github.com/ankitshubham97/stardapp#klaymakers-2022
 
 - - -
 # Inspirations: Problems with the current state of creator economy
@@ -163,7 +164,12 @@ If you want to interact with the live app, you would need a Metamask wallet swit
 
 To check the unhappy path, you could just use any random wallet to connect to the app.
 - - -
+# Klaymakers 2022
 
+1. Applying for NFT track.
+2. Applying for Tatum Challenge & GroundX challenge as the project is crucially dependent on Tatum fetch balance API and Token History API.
+
+- - -
 # Future
 This project aims to solve the obvious problems of creator economy(CE) viz centralization of access to creator's data by centralized authorities, content leaks, little-to-no control of creators on the monetization of their content, inability for consumers to trade the subscription etc. We aim to build a product which resolves these problems while polishing it so that it could be adopted by masses. We are still doing some market research mainly around how to provide these services (will it make sense to whitelabel this and ship to creators or host it as SAAS), business value, market cap, rate of adoption etc.
 
