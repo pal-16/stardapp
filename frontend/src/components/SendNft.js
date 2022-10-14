@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { sendNft } from '../utils/connectWallet';
-import { CoinexIcon } from './coinexIcon';
 
 const SendNft = (props) => {
   const [address, setAddress] = useState(null);

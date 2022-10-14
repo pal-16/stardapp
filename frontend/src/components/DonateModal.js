@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { sendKlay } from '../utils/connectWallet';
-import { CoinexIcon } from './coinexIcon';
 
 const DonateModal = (props) => {
   const [amountInKlay, setAmountInKlay] = useState(0);

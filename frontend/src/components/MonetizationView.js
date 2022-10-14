@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getMonetizationInfo } from "../utils/connectWallet";
-import { CoinexIcon } from "./coinexIcon";
 
 const MonetizationView = (props) => {
   const [monetization, setMonetization] = useState({});
@@ -18,12 +17,12 @@ const MonetizationView = (props) => {
           <div className="bg-white shadow-md rounded my-6">
               <div className="flex flex-row px-[1rem] py-[1rem] text-2xl">
                 <span className="flex flex-row font-medium">
-                  Total Donation Revenue: <div className="ml-[1rem] w-[2.5rem]"><CoinexIcon/></div> {monetization?.donationRevenues && monetization.donationRevenues.length > 0 ? `${monetization.donationRevenues.reduce((sum, current) => sum + (+ current.revenue), 0)}` : '0'}
+                  Total Donation Revenue: KLAY {monetization?.donationRevenues && monetization.donationRevenues.length > 0 ? `${monetization.donationRevenues.reduce((sum, current) => sum + (+ current.revenue), 0)}` : '0'}
                 </span>
               </div>
               <div className="flex flex-row px-[1rem] pb-[1rem] text-2xl">
                 <span className="flex flex-row font-medium">
-                  Total Minting Revenue: <div className="ml-[1rem] w-[2.5rem]"><CoinexIcon/></div> {monetization?.mintRevenues && monetization.mintRevenues.length > 0 ? `${monetization.mintRevenues.reduce((sum, current) => sum + (+ current.revenue), 0)}` : '0'}
+                  Total Minting Revenue: KLAY {monetization?.mintRevenues && monetization.mintRevenues.length > 0 ? `${monetization.mintRevenues.reduce((sum, current) => sum + (+ current.revenue), 0)}` : '0'}
                 </span>
               </div>
             <table className="min-w-max w-full table-auto">

@@ -1,4 +1,4 @@
-import AuthNft, { getContractDetails, GetTokenResponseSuccess } from './authentication.service';
+import AuthNft, { GetTokenResponseSuccess } from './authentication.service';
 import axios, { ResponseType } from 'axios';
 import FormData from 'form-data';
 import express from 'express';
@@ -59,7 +59,6 @@ class AuthenticationController implements Controller {
     this.router.post('/download', readAuthMiddleware, this.downloadFile);
     this.router.post('/delete', writeAuthMiddleware, this.deleteFile);
     this.router.post('/list', readAuthMiddleware, this.listFiles); 
-    this.router.get('/contract/:nftContractAddress', this.getContractDetails); 
     this.router.get('/token-uri/', this.generateTokenUri); 
     this.router.post(`/get-nfts/`, readAuthMiddleware, this.getNfts);
     this.router.post(`/get-klay-balance/`, readAuthMiddleware,this.getKlayBalance);
@@ -291,14 +290,6 @@ class AuthenticationController implements Controller {
       return;
     }
     res.send(data);
-  };
-
-  private getContractDetails = async (
-    request: express.Request,
-    response: express.Response
-  ) => {
-    const { nftContractAddress } = request.params;
-    return response.send(await getContractDetails({nftContractAddress}));
   };
 
   private generateTokenUri = async (
