@@ -17,13 +17,21 @@ const SingleFileView = () => {
   let { slug } = useParams();
   const location = useLocation()
   var { filename } = location.state;
+  var filetype = filename.substr(filename.lastIndexOf('.') + 1);
+
   return (
     <div className="car_container">
-      <section className="car_section">
-        <img alt="" src={reconstructBlobUrl(slug)} className='car_image'/>
-      </section>
+      {filetype !== "mp4" ?
+        <section className="car_section">
+          <img alt="" src={reconstructBlobUrl(slug)} className='car_image' />
+        </section> :
+
+        <video width="100%" height="100%" controls>
+          <source src={reconstructBlobUrl(slug)} type="video/mp4" />
+        </video>
+      }
       <div className='py-[1rem]'>
-        <hr/>
+        <hr />
       </div>
       <div className='resource_title'>
         {extractNameFromEncryptedFileName(filename)}
@@ -38,9 +46,9 @@ const SingleFileView = () => {
       {localStorage.getItem('accessLevel') !== 'write' ? (
         <div className="py-[1rem]">
           <button onClick={onDonateClick} className="navLink navLink-hover mb-2"> Donate </button>
-          { showDonateModal && <DonateModal onClose={onDonateClose}/> }
+          {showDonateModal && <DonateModal onClose={onDonateClose} />}
         </div>
-      ):<></>}
+      ) : <></>}
     </div>
   );
 }
